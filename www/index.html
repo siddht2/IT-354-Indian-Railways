@@ -1,0 +1,39 @@
+<!DOCTYPE>
+
+<html>
+<head>
+<meta charset="UTF-8">
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</head>
+
+	<body>	
+		<h2>Train Information from Indian Railways API</h2>
+		
+			Please enter train number:<br><br>
+			<form id="myform" name="myform">
+				<input type="text" name="train" id="trainno" >
+				<br><br>
+				<input type="submit" value="Submit" name="save" id="save">
+			</form>
+			
+			<div style="float:left;">Your train name is: <span style="font-weight: bold" id="holder-name"></span></div>	
+			
+		<script>
+		$('#save').on('click', function(event){
+			event.preventDefault();
+		  $.ajax({            
+				type: 'GET',
+				url: 'http://localhost/MyFolder/example.php',	
+				dataType: 'json',
+				data: {train: $('#trainno').val()},
+					success: function(data){
+						$('#holder-name').html(data.result.name);
+				},
+					error: function(x, e){
+						alert('ERROR');
+						}
+					});
+				});
+		</script>
+	</body>	
+</html>
