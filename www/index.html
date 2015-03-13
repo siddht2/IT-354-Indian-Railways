@@ -26,7 +26,7 @@
 				type: 'GET',
 				url: 'http://api.erail.in/route/?key=3d970b43-550b-4568-9227-492697f47093&trainno=' + train,	
 				dataType: 'json',
-				data: {train: $('#trainno').val()},
+				//data: {train: $('#trainno').val()},
 					success: function(data){
 						$('#holder-name').html(data.result.name);
 				},
