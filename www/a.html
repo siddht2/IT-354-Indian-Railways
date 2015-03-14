@@ -1,0 +1,77 @@
+<!DOCTYPE>
+
+<html>
+<head>
+<meta charset="UTF-8">
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+</head>
+
+	<body>	
+		<h2>Train Information from Indian Railways API</h2>
+		
+			Please enter train number:<br><br>
+			<form id="myform" name="myform">
+				<input type="text" name="train" id="trainno" >
+				<br><br>
+				<input type="submit" value="Submit" name="save" id="save">
+                </form>
+        
+			
+			<div style="float:left;">Your train name is: <span style="font-weight: bold" id="holder-name"></span></div>	<br />
+             <p id="tableDisplay"></p>
+        <div class="ui-widget">
+ 
+  <input id="tags">
+                </div>
+        
+
+			
+		<script>           
+            var stationList = [];
+		$('#save').on('click', function(event){
+			event.preventDefault();
+            var train = document.getElementById('trainno').value;
+		  $.ajax({            
+				type: 'GET',
+				url: 'http://api.erail.in/route/?key=3d970b43-550b-4568-9227-492697f47093&trainno=' + train,	
+				dataType: 'json',
+					success: function(data){
+                        var status = data.status;
+                        if(status=="OK"){
+                          // alert(data.status);
+                            
+                            for(var i in data.result.route[0].stn){                  
+                                stationList[i]=(data.result.route[0].stn[i].name);              
+                            }
+                            var display;
+                            display+="<br /><table>";
+                   
+                            for(var j =0;j<stationList.length;j++){                   
+                                display+="<tr><td>" + stationList[j] + "</td></tr>"
+                            }
+                            display+="</table>";
+                            document.getElementById("tableDisplay").innerHTML=display;
+                            $('#holder-name').html(data.result.name);                            
+                    }
+                        else{
+                            alert(data.status);
+                        } 
+                    },
+					error: function(x, e){
+						alert('ERROR');
+						}
+					});
+				});
+            
+            $(function() {   
+    $( "#tags" ).autocomplete({
+      source: stationList
+    });
+  });
+  
+		</script>
+	</body>	
+</html>
