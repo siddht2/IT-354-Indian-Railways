@@ -20,7 +20,7 @@
             var apiLink = 'http://api.erail.in/trains/?key=3d970b43-550b-4568-9227-492697f47093&stnfrom=';
             var linkModified = apiLink + stcode1 + "&stnto=" + stcode2;
             var trainsListToDisplay = "<table border='2'>";
-            trainsListToDisplay += "<tr><th>Train Number</th><th>Run Days</th><th>From</th><th>Departure Time</th><th>To</th><th>Arrival Time</th><th>Type</th><th>Travelling Time</th></tr>";
+            trainsListToDisplay += "<tr><th>Train Number</th><th>Run Days</th><th>Train Name</th><th>From</th><th>Departure Time</th><th>To</th><th>Arrival Time</th><th>Type</th><th>Travelling Time</th></tr>";
             $.ajax({
                 type: 'GET',
                 url: linkModified,
@@ -31,6 +31,7 @@
                         trainsListToDisplay += "<tr>";
                         trainsListToDisplay += "<td><a href='trainroute.html?param1=" + data.result[i].trainno + "' >" +data.result[i].trainno +"</a></td>";
                         trainsListToDisplay += "<td>" + data.result[i].rundays + "</td>";
+                        trainsListToDisplay += "<td>" + data.result[i].name + "</td>";
                         trainsListToDisplay += "<td>" + data.result[i].fromname + "</td>";
                         trainsListToDisplay += "<td>" + data.result[i].dep + "</td>";
                         trainsListToDisplay += "<td>" + data.result[i].toname + "</td>";
