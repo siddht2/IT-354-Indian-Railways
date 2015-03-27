@@ -29,7 +29,7 @@
 
                     for (var i = 0; i < data.result.length; i++) {
                         trainsListToDisplay += "<tr>";
-                        trainsListToDisplay += "<td>" + data.result[i].trainno + "</td>";
+                        trainsListToDisplay += "<td><a href='trainroute.html?param1=" + data.result[i].trainno + "' >" +data.result[i].trainno +"</a></td>";
                         trainsListToDisplay += "<td>" + data.result[i].rundays + "</td>";
                         trainsListToDisplay += "<td>" + data.result[i].fromname + "</td>";
                         trainsListToDisplay += "<td>" + data.result[i].dep + "</td>";
