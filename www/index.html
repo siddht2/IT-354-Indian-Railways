@@ -19,7 +19,7 @@
         <div class="ui-widget">
             Station 1: <input id="tags2">
         </div>
-        <a href="page2.html" onclick="storeSessionVariables();">HI</a>
+        <a href="page2.html" onclick="storeSessionVariables();">Get Results</a>
     </form>
     <script>
         var stationList = [];
@@ -62,9 +62,16 @@
                 //fetching respective station code
                 var stCode1 = stationCode[stationList.indexOf(document.getElementById('tags1').value)];
                 var stCode2 = stationCode[stationList.indexOf(document.getElementById('tags2').value)];
+                var startStationName = document.getElementById('tags1').value;
+                var endStationName = document.getElementById('tags2').value;
+                
                 // Store variable in local storage (Acts as session). Feature of HTML 5
                 localStorage.setItem("station1", stCode1);
                 localStorage.setItem("station2", stCode2);
+                
+                localStorage.setItem("startStation", startStationName);
+                localStorage.setItem("endStation", endStationName);
+                
 
             }
         }
