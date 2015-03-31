@@ -3,79 +3,42 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <link rel="stylesheet" href="css/index.css">
 </head>
 
-<body onload="preloadStationList()">
-    <h2>Train Information from Indian Railways API</h2>
-    <form>
-        <div>
-            Station 1: <input id="tags1" >
+<body onload="delay()">
+    <div data-role="page" id="pageone">
+        <div data-role="header">
+            <h2>Indian Railways</h2>
         </div>
-        <div class="ui-widget">
-            Station 1: <input id="tags2">
+        <div data-role="main" class="ui-content">
+            <div class='center'>
+                <h1>Welcome to Indian Railways</h1>
+                <img src="img/IndexImage2.png" alt="indeximage" id='indexImage'></img>
+            </div>
         </div>
-        <a href="page2.html" onclick="storeSessionVariables();">Get Results</a>
-    </form>
+        <div data-role="footer" data-position="fixed">
+            <h1>&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</h1>
+        </div>
+    </div>
+
     <script>
-        var stationList = [];
-        var stationCode = [];
-
-
-        function preloadStationList() {
-            $.ajax({
-                type: 'GET',
-                url: 'http://api.erail.in/stations/?key=3d970b43-550b-4568-9227-492697f47093',
-                dataType: 'json',
-                success: function (data) {
-
-                    for (var i = 0; i < data.length; i++) {
-                        stationList[i] = data[i].name;
-                        stationCode[i] = data[i].code;
-                    }
-                },
-                error: function (x, e) {
-                    alert('ERROR');
-                }
-            });
+        function delay() {
+            var myVar = setInterval(function () {
+                redirect()
+            }, 5000);
         }
 
-        $(function () {
-            $("#tags1").autocomplete({
-                source: stationList
-            });
-        });
-
-        $(function () {
-            $("#tags2").autocomplete({
-                source: stationList
-            });
-        });
-
-        function storeSessionVariables() {
-            //alert(document.getElementById('tags1').value);
-            if (typeof (Storage) != "undefined") {
-                //fetching respective station code
-                var stCode1 = stationCode[stationList.indexOf(document.getElementById('tags1').value)];
-                var stCode2 = stationCode[stationList.indexOf(document.getElementById('tags2').value)];
-                var startStationName = document.getElementById('tags1').value;
-                var endStationName = document.getElementById('tags2').value;
-                
-                // Store variable in local storage (Acts as session). Feature of HTML 5
-                localStorage.setItem("station1", stCode1);
-                localStorage.setItem("station2", stCode2);
-                
-                localStorage.setItem("startStation", startStationName);
-                localStorage.setItem("endStation", endStationName);
-                
-
-            }
+        function redirect() {
+            window.location.replace("SelectStations.html");
         }
-
     </script>
 </body>
 
