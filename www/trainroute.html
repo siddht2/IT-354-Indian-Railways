@@ -1,0 +1,75 @@
+<head>
+
+
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
+</head>
+
+<body onload="getStops();">
+
+    <h1>Train Stops</h1>
+    <h3>Train Name: <p id='trainname'></p></h3>
+    <h3>Train No: <p id='trainno'></p></h3>
+    <div id='displaystoplist'></div>
+
+
+    <script>
+        function getStops() {
+            var trainno = getQueryVariable("param1");
+
+            var apilink = 'http://api.erail.in/route/?key=3d970b43-550b-4568-9227-492697f47093&trainno=';
+            var finalUrl = apilink + trainno;
+            var displayTable = "<table border='1'>"
+            displayTable += "<tr><th>Stop Name</th><th>Arrival Time</th><th>Departure Time</th></tr>";
+
+
+            $.ajax({
+                type: 'GET',
+                url: finalUrl,
+                dataType: 'json',
+                success: function (data) {
+
+                    document.getElementById('trainname').innerHTML = data.result.name;
+                    document.getElementById('trainno').innerHTML = data.result.trainno;
+
+                    for (var i = 0; i < data.result.route[0].stn.length; i++) {
+                        displayTable += "<tr>";
+                        displayTable += "<td>" + data.result.route[0].stn[i].name + "</td>";
+                        displayTable += "<td>" + data.result.route[0].stn[i].arr + "</td>";
+                        displayTable += "<td>" + data.result.route[0].stn[i].dep + "</td>";
+                        displayTable += "</tr>";
+                    }
+                    displayTable += "</table>";
+                    document.getElementById('displaystoplist').innerHTML = displayTable;
+                },
+                error: function (x, e) {
+                    alert('ERROR');
+                }
+            });
+        }
+
+
+
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == variable) {
+                    return pair[1];
+                }
+            }
+            return false;
+        }
+    </script>
+
+
+
+
+
+</body>

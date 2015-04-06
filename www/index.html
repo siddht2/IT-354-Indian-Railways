@@ -1,0 +1,45 @@
+<!DOCTYPE>
+
+<html>
+
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body onload="delay()">
+    <div data-role="page" id="pageone">
+        <div data-role="header">
+            <h2>Indian Railways</h2>
+        </div>
+        <div data-role="main" class="ui-content">
+            <div class='center'>
+                <h1>Welcome to Indian Railways</h1>
+                <img src="img/IndexImage2.png" alt="indeximage" id='indexImage'></img>
+            </div>
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <h1>&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</h1>
+        </div>
+    </div>
+
+    <script>
+        function delay() {
+            var myVar = setInterval(function () {
+                redirect()
+            }, 5000);
+        }
+
+        function redirect() {
+            window.location.replace("SelectStations.html");
+        }
+    </script>
+</body>
+
+</html>
