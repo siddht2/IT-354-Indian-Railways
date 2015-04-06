@@ -1,0 +1,66 @@
+<head>
+    <meta charset="UTF-8">
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        var stcode1 = "";
+        var stcode2 = "";
+        var trainNo = [];
+
+        function fetchSessionVariables() {
+
+            if (typeof (Storage) != "undefined") {
+                stcode1 = localStorage.getItem("station1");
+                stcode2 = localStorage.getItem("station2");
+                document.getElementById('station1').innerHTML = stcode1;
+                document.getElementById('station2').innerHTML = stcode2;
+            }
+            var apiLink = 'http://api.erail.in/trains/?key=3d970b43-550b-4568-9227-492697f47093&stnfrom=';
+            var linkModified = apiLink + stcode1 + "&stnto=" + stcode2;
+            var trainsListToDisplay = "<table border='2'>";
+            trainsListToDisplay += "<tr><th>Train Number</th><th>Run Days</th><th>Train Name</th><th>From</th><th>Departure Time</th><th>To</th><th>Arrival Time</th><th>Type</th><th>Travelling Time</th></tr>";
+            $.ajax({
+                type: 'GET',
+                url: linkModified,
+                dataType: 'json',
+                success: function (data) {
+
+                    for (var i = 0; i < data.result.length; i++) {
+                        trainsListToDisplay += "<tr>";
+                        trainsListToDisplay += "<td><a href='trainroute.html?param1=" + data.result[i].trainno + "' >" +data.result[i].trainno +"</a></td>";
+                        trainsListToDisplay += "<td>" + data.result[i].rundays + "</td>";
+                        trainsListToDisplay += "<td>" + data.result[i].name + "</td>";
+                        trainsListToDisplay += "<td>" + data.result[i].fromname + "</td>";
+                        trainsListToDisplay += "<td>" + data.result[i].dep + "</td>";
+                        trainsListToDisplay += "<td>" + data.result[i].toname + "</td>";
+                        trainsListToDisplay += "<td>" + data.result[i].arr + "</td>";
+                        trainsListToDisplay += "<td>" + data.result[i].type + "</td>";
+                        trainsListToDisplay += "<td>" + data.result[i].traveltime + "</td>";
+                        trainsListToDisplay += "</tr>";
+                        trainNo[i] = data.result[i].trainno;
+                    }
+                    trainsListToDisplay += "</table>";
+                    if (data.result.length < 1) {
+                        trainsListToDisplay = "No trains running on this route";
+                    }
+                    document.getElementById('trainslists').innerHTML = trainsListToDisplay;
+                },
+                error: function (x, e) {
+                    alert('ERROR');
+                }
+            });
+
+        }
+    </script>
+</head>
+
+<body onload="fetchSessionVariables();">
+    <h1>        
+    Hi...</h1> Station 1 :
+    <p id='station1'></p>
+    Station 2 :
+    <p id='station2'></p>
+    <p id="trainslists"></p>
+</body>
