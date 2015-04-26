@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <!-- Google Maps API -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+    <!-- Google CDN for jQuery -->
+
+    <script>
+        function goBack() {
+            window.location.replace('SelectStations.html');
+        }
+
+        function FetchAllData() {
+
+            var fareDetails;
+            //http://api.erail.in/fare/?key=3d970b43-550b-4568-9227-492697f47093&trainno=12138&stnfrom=NDLS&stnto=CSTM&age=AD&quota=GN&date=05-MAY-2015
+            var quotaSelected = localStorage.getItem("quota");
+            quotaSelected = "GN";
+            var coachSelected = localStorage.getItem("coachClass");;
+            var dateSelected = localStorage.getItem("dateSelected");
+            var trainNo = localStorage.getItem("trainSelected");
+            var startStation = localStorage.getItem("station1");
+            var endStation = localStorage.getItem("station2");
+            document.getElementById('dateoftravel').value = dateSelected;
+            dateSelected = "05-MAY-2015";
+            var link = "http://api.erail.in/fare/?key=3d970b43-550b-4568-9227-492697f47093&trainno=" + trainNo + "&stnfrom=" + startStation + "&stnto=" + endStation + "&age=AD" + "&quota=" + quotaSelected + "&class=" + coachSelected + "&date=" + dateSelected;
+
+            $.ajax({
+                type: 'GET',
+                url: link,
+                dataType: 'json',
+                success: function (data) {
+                    //  if (data.status == "OK") {
+                    fareDetails += "<table border='1'><tr><th>Date</th><th>Class</th><th>fare</th></tr>";
+                    for (var i = 0; i < data.result.fare.length; i++) {
+                        fareDetails += "<tr><td>" + data.result.date + "</td>";
+                        fareDetails += "<td>" + data.result.fare[i].cls + "</td>";
+                        fareDetails += "<td>" + data.result.fare[i].fare + "</td>";
+                        fareDetails += "</tr>";
+                    }
+               
+                    fareDetails += "</table>";
+                    document.getElementById('fareDetails').innerHTML = fareDetails;
+
+                },
+                error: function (x, e) {
+                    alert('ERROR');
+                }
+
+            });
+        }
+
+        function goBack() {
+            window.location.reload("SeatAvailibility.html");
+
+        }
+    </script>
+
+
+</head>
+
+<body onload="FetchAllData();">
+    <div data-role="page" id="pageone">
+        <h1>Fares</h1>
+        <div data-role="header">
+            <h1>Indian Railways</h1>
+            <h2>        
+              <label id='station1'></label> >> <label id='station2'></label></h2>
+        </div>
+        <div data-role="main" class="ui-content">
+
+            <p>Select Date</p>
+            <p>Date:
+                <input type="date" name="bday" id="dateoftravel" />
+                <select id="quotas">
+                    <option value="GN">General Quota</option>
+                    <option value="CK">Tatkal Quota</option>
+                    <option value="LD">Ladies Quota</option>
+                    <option value="DF">Defence Quota</option>
+                    <option value="FT">Foreign Tourist</option>
+                    <option value="DP">Duty Pass Quota</option>
+                    <option value="HP">Handicapped Quota</option>
+                    <option value="PH">Parliament House Quota</option>
+                    <option value="SS">Lower Berth Quota</option>
+                    <option value="YU">Yuva Quota</option>
+                </select>
+
+                <button id="searchSeatAvailibility" onclick="searchSeatAvailibility();">Check availibility</button>
+                <div id="fareDetails">
+
+
+                </div>
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <h1>&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</h1>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

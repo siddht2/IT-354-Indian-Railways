@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--<meta name="viewport" content="initial-scale=1.0, user-scalable=no"> -->
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=no; target-densityDpi=device-dpi" />
+    <meta charset="utf-8">
+    <title>Geocoding service</title>
+    <style>
+        html,
+        body,
+        #map-canvas {
+            height: 100%;
+            margin: 0px;
+            padding: 0px
+        }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+
+    <script>
+        var directionsDisplay;
+        var directionsService = new google.maps.DirectionsService();
+        var map;
+
+        function loadMap() {
+            initialize();
+            this.calcRoute();
+        }
+        
+        function initialize() {
+            directionsDisplay = new google.maps.DirectionsRenderer();
+            var chicago = new google.maps.LatLng(28.6139, 77.2090);
+            var mapOptions = {
+                zoom: 5,
+                center: chicago
+            };
+            map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            directionsDisplay.setMap(map);
+        }
+        
+        function calcRoute() {
+            var sourceAddress = localStorage.getItem("startStation");
+            var destination = localStorage.getItem("endStation");
+            var request = {
+                origin: sourceAddress,
+                destination: destination,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+
+            directionsService.route(request, function (response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                }
+            });
+        }
+
+        //google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+</head>
+
+<body onload="loadMap();">
+
+    <div id="map-canvas"></div>
+</body>
+
+</html>
