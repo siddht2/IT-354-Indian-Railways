@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<meta charset="utf-8">
+	<title>Time</title>
+</head>
+<body>
+	<form>
+		<input type="date" id="userdate"/>
+		<input type="button" value="Time" onclick="readTime()"/>
+	</form>
+	
+	<script>
+	function readTime(){
+	//2015-04-16  comes as
+	//16-APR-2015 required
+	
+    var timeReceived = document.getElementById("userdate").value;
+	var returnedFormat = timeReceived.split("-");
+	
+	var dateIs = returnedFormat[2]; //Gets Date
+	var yearIs = returnedFormat[0]; // Gets Year
+	
+	//For Getting Month
+	var d = new Date(timeReceived);
+	var stringDate = d.toString();
+	var splitDate = stringDate.split(" ");
+	var monthIs = splitDate[1].toUpperCase();
+	
+	var finalString = dateIs+"-"+monthIs+"-"+yearIs;
+	console.log(finalString);
+   }
+	</script>
+</body>	
+</html>

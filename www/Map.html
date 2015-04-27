@@ -39,8 +39,12 @@
         }
         
         function calcRoute() {
-            var sourceAddress = localStorage.getItem("startStation");
-            var destination = localStorage.getItem("endStation");
+            var sourceAddress = localStorage.getItem("station1");
+            var destination = localStorage.getItem("station2");
+            var a = sourceAddress.split("-");
+            sourceAddress=a[1];
+            var b = destination.split("-");
+            destination=b[1];
             var request = {
                 origin: sourceAddress,
                 destination: destination,

@@ -61,10 +61,14 @@
                 
 
                 // Store variable in local storage (Acts as session). Feature of HTML 5
-                localStorage.setItem("station1", stCode1);
-                localStorage.setItem("station2", stCode2);
-                localStorage.setItem("startStation", startStationName);
-                localStorage.setItem("endStation", endStationName);
+                localStorage.setItem("st1", stCode1);//old station1
+                localStorage.setItem("st2", stCode2);
+                localStorage.setItem("stName1", startStationName);
+                localStorage.setItem("stName2", endStationName);
+//                 localStorage.setItem("station1", stCode1);
+//                localStorage.setItem("station2", stCode2);
+//                localStorage.setItem("startStation", startStationName);
+//                localStorage.setItem("endStation", endStationName);
                   window.location.replace("TrainsList.html");
                 
             }
