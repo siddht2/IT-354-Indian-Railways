@@ -15,16 +15,16 @@ $(document).ajaxComplete(function () {
     $("#wait").css("display", "none");
 	
 });*/
-$(document).on('ajaxStart', function(){     
-    setTimeout(function(){
+$(document).on('ajaxStart', function () {
+    setTimeout(function () {
         $.mobile.loading('show');
-    },1);    
+    }, 1);
 });
 
-$(document).on('ajaxComplete', function(){  
-    setTimeout(function(){
+$(document).on('ajaxComplete', function () {
+    setTimeout(function () {
         $.mobile.loading('hide');
-    },300);      
+    }, 300);
 });
 
 
@@ -133,35 +133,41 @@ function onSelectValueInDropdown() {
 //Get train route	
 function getStops() {
 
-        var trainno = onSelectValueInDropdown();
-        var apilink = 'http://api.erail.in/route/?key=3d970b43-550b-4568-9227-492697f47093&trainno=';
-        apilink += trainno;
-        var displayTable = "<table border='1'>"
-        displayTable += "<tr><th>Stop Name</th><th>Arrival Time</th><th>Departure Time</th></tr>";
+        if (!checkTrainSelected()) {
+            alert("No Train Selected");
+            return false;
+        } else {
+            var trainno = onSelectValueInDropdown();
+            var apilink = 'http://api.erail.in/route/?key=3d970b43-550b-4568-9227-492697f47093&trainno=';
+            apilink += trainno;
+            var displayTable = "<table border='1'>"
+            displayTable += "<tr><th>Stop Name</th><th>Arrival Time</th><th>Departure Time</th></tr>";
 
-        $.ajax({
-            type: 'GET',
-            url: apilink,
-            dataType: 'json',
-            success: function (data) {
+            $.ajax({
+                type: 'GET',
+                url: apilink,
+                dataType: 'json',
+                success: function (data) {
 
-                document.getElementById('trainname').innerHTML = data.result.name;
-                document.getElementById('trainno').innerHTML = data.result.trainno;
+                    document.getElementById('trainname').innerHTML = data.result.name;
+                    document.getElementById('trainno').innerHTML = data.result.trainno;
 
-                for (var i = 0; i < data.result.route[0].stn.length; i++) {
-                    displayTable += "<tr>";
-                    displayTable += "<td>" + data.result.route[0].stn[i].name + "</td>";
-                    displayTable += "<td>" + data.result.route[0].stn[i].arr + "</td>";
-                    displayTable += "<td>" + data.result.route[0].stn[i].dep + "</td>";
-                    displayTable += "</tr>";
+                    for (var i = 0; i < data.result.route[0].stn.length; i++) {
+                        displayTable += "<tr>";
+                        displayTable += "<td>" + data.result.route[0].stn[i].name + "</td>";
+                        displayTable += "<td>" + data.result.route[0].stn[i].arr + "</td>";
+                        displayTable += "<td>" + data.result.route[0].stn[i].dep + "</td>";
+                        displayTable += "</tr>";
+                    }
+                    displayTable += "</table>";
+                    document.getElementById('displaystoplist').innerHTML = displayTable;
+                },
+                error: function (x, e) {
+                    alert('ERROR');
                 }
-                displayTable += "</table>";
-                document.getElementById('displaystoplist').innerHTML = displayTable;
-            },
-            error: function (x, e) {
-                alert('ERROR');
-            }
-        });
+            });
+            return true;
+        }
     }
     // Get todays date
     //Get current date-http://stackoverflow.com/questions/1531093/how-to-get-current-date-in-javascript
@@ -182,13 +188,13 @@ function getToday() {
 
     var d = new Date();
     var mon = month[d.getMonth()];
-	var date = d.getDate(); 
+    var date = d.getDate();
     var yyyy = d.getFullYear();
 
     if (date < 10) {
         date = '0' + date
     }
-	var today = date+"-"+mon+"-"+yyyy;
+    var today = date + "-" + mon + "-" + yyyy;
     return today;
 }
 
@@ -198,51 +204,102 @@ function splitCode(stcode) {
     return a[0];
 }
 
-function getLiveStatus() {
-    var trainno = onSelectValueInDropdown();
-    var stncode1 = splitCode(spstn1);
-    var apilink = 'http://api.erail.in/live/?key=3d970b43-550b-4568-9227-492697f47093&trainno=';
-    apilink += trainno;
-    apilink += "&stnfrom=" + stncode1;
-    apilink += "&date=" + getToday();
-    console.log(apilink);
-    $.ajax({
-        type: 'GET',
-        url: apilink,
-        dataType: 'json',
-        success: function (data) {
-            if (data.status == "OK") {
-                
-                document.getElementById('trainnm').innerHTML = data.result.name;
-                document.getElementById('trainid').innerHTML = data.result.trainno;
-                document.getElementById('delayrun').innerHTML = data.result.delayrun;
-                document.getElementById('statusat').innerHTML = data.result.statusat;
-                document.getElementById('statusmsg').innerHTML = data.result.statusmsg;
-                document.getElementById('platform').innerHTML = data.result.platform;
-            } else {
-                document.getElementById('status').innerHTML = data.status;
-            }
-
-        },
-        error: function (x, e) {
-            alert('ERROR');
-        }
-    });
-
-
+function checkTrainSelected() {
+    var t = $('#select-train-dd :selected').val();
+    if (t.length != 5) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
-function setVariables() {
-    $("#wait").css("display", "block");
-    var outputData = "";
+function checkStop1Selected() {
 
-    var a = coachClass.split(' ');
-    for (var i = 0; i < a.length; i++) {
-        outputData += "<option value='" + a[i] + "'>" + a[i] + "</option>";
+    if (spstn1.length < 2) {
+        return false;
+    } else {
+        return true;
     }
-    document.getElementById('daysrunning').innerHTML = runningdays;
-    document.getElementById('trainclass').innerHTML = outputData;
-    $("#wait").css("display", "none");
+}
+
+function checkStop2Selected() {
+    if (spstn2.length < 2) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+
+function getLiveStatus() {
+
+    if (!checkTrainSelected()) {
+        alert("No Train Selected");
+        return false;
+    } else if (!checkStop1Selected()) {
+        alert("No Stop Selected");
+        return false;
+    } else {
+        var trainno = onSelectValueInDropdown();
+        var stncode1 = splitCode(spstn1);
+        var apilink = 'http://api.erail.in/live/?key=3d970b43-550b-4568-9227-492697f47093&trainno=';
+        apilink += trainno;
+        apilink += "&stnfrom=" + stncode1;
+        apilink += "&date=" + getToday();
+        console.log(apilink);
+        $.ajax({
+            type: 'GET',
+            url: apilink,
+            dataType: 'json',
+            success: function (data) {
+                if (data.status == "OK") {
+
+                    document.getElementById('trainnm').innerHTML = data.result.name;
+                    document.getElementById('trainid').innerHTML = data.result.trainno;
+                    document.getElementById('delayrun').innerHTML = data.result.delayrun;
+                    document.getElementById('statusat').innerHTML = data.result.statusat;
+                    document.getElementById('statusmsg').innerHTML = data.result.statusmsg;
+                    document.getElementById('platform').innerHTML = data.result.platform;
+                } else {
+                    document.getElementById('status').innerHTML = data.status;
+                }
+
+            },
+            error: function (x, e) {
+                alert('ERROR');
+            }
+        });
+        return true;
+    }
+}
+
+
+
+
+
+function SeatAvailibility() {
+    if (!checkTrainSelected()) {
+        alert("No Train Selected");
+        return false;
+    } else if (!checkStop1Selected()) {
+        alert("Please Select Start Station");
+        return false;
+    } else if (!checkStop2Selected()) {
+        alert("Please Select Last Station");
+        return false;
+    } else {
+        $("#wait").css("display", "block");
+        var outputData = "";
+
+        var a = coachClass.split(' ');
+        for (var i = 0; i < a.length; i++) {
+            outputData += "<option value='" + a[i] + "'>" + a[i] + "</option>";
+        }
+        document.getElementById('daysrunning').innerHTML = runningdays;
+        document.getElementById('trainclass').innerHTML = outputData;
+        $("#wait").css("display", "none");
+        return true;
+    }
 }
 
 function goBack() {
@@ -250,12 +307,28 @@ function goBack() {
 }
 
 function redirectToMap() {
-    window.location.replace("Map.html");
+
+    if (!checkTrainSelected()) {
+        alert("No Train Selected");
+        return false;
+    } else if (!checkStop1Selected()) {
+        alert("Please Select Start Station");
+        return false;
+    } else if (!checkStop2Selected()) {
+        alert("Please Select Last Station");
+        return false;
+    } else {
+        window.location.replace("Map.html");
+    }
 }
 
 function seatAvailibility() {
 
     window.location.replace("SeatAvailibility.html");
+}
+
+function redirectToHome() {
+    window.location.replace("index.html#pageone");
 }
 
 function onStationSelect() {

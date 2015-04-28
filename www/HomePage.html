@@ -89,19 +89,19 @@
             <!--navbar-->
             <div data-role="navbar" data-theme='b'>
                 <ul>
-                    <li><a href="#route" class="ui-shadow ui-btn ui-corner-all" onClick="getStops();" id="getstops">Route Info</a>
+                    <li><a href="#route" class="ui-shadow ui-btn ui-corner-all" onClick="return getStops();" id="getstops">Route Info</a>
                     </li>
 
-                    <li><a href="#liveStatus" class="ui-shadow ui-btn ui-corner-all" onClick="getLiveStatus();" id="livestatus">Live Status</a>
+                    <li><a href="#liveStatus" class="ui-shadow ui-btn ui-corner-all" onClick="return getLiveStatus();" id="livestatus">Live Status</a>
                     </li>
 
-                    <li><a href="#seatavail" id="seatAvailibility" onclick="setVariables();" class="ui-shadow ui-btn ui-corner-all">Seat Availability</a>
+                    <li><a href="#seatavail" id="seatAvailibility" onclick="return SeatAvailibility();" class="ui-shadow ui-btn ui-corner-all">Seat Availability</a>
                     </li>
 
-                    <li><a id="toMap" onclick="redirectToMap();" class="ui-shadow ui-btn ui-corner-all">Maps</a>
+                    <li><a id="toMap" onclick="return redirectToMap();" class="ui-shadow ui-btn ui-corner-all">Maps</a>
                     </li>
 
-                    <li><a href="index.html" class="ui-shadow ui-btn ui-corner-all">Go Back</a>
+                    <li><button onclick="redirectToHome();" class="ui-shadow ui-btn ui-corner-all">Go Back</button>
                     </li>
 
                     <li><a href="#aboutus" class="ui-shadow ui-btn ui-corner-all">About Us</a>
@@ -211,8 +211,8 @@
                     </select>
                 </div>
             </div>
-            <button id="searchSeatAvailibility" onclick="searchSeatAvailibility();">Check availibility</button>
-            <a class="ui-btn" onclick="fetchFareDetails();">Fares</a>
+            <button id="searchSeatAvailibility" onclick="return searchSeatAvailibility();">Check availibility</button>
+            <a class="ui-btn" onclick="return fetchFareDetails();">Fares</a>
 			<button id="getfare" disabled hidden="true" style="background-color:#219B1C"></button>
             <div data-demo-html="true">
             <ul data-role="listview" data-inset="true" id="seatResults">
