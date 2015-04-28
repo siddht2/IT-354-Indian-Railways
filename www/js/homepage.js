@@ -1,5 +1,5 @@
 //side panel
-var panel = '<div data-role="panel" class="ui-panel-animate" id="mypanel" data-position="right" data-display="overlay" data-theme="b"><div data-role="header"><h1>Panel</h1></div><ul data-role="listview" data-inset="true"><li class="newsfeed"><a href="#" title="Home">Home</a></li><li class="profile"><a href="#route" title="Route Info">Route Info</a></li><li class="setting"><a href="#livestatus" title="Live Status">Live Status</a></li><li class="logout"><a href="#" title="Train Status">Train Status</a></li><li class="report"><a href="#mapmarker" title="Map View">Map View</a></li></ul></div>';
+var panel = '<div data-role="panel" class="ui-panel-animate" id="mypanel" data-position="right" data-display="overlay" data-theme="b"><div data-role="header"><h1>Links</h1></div><ul data-role="listview" data-inset="true"><li class="newsfeed"><a href="#home" title="Home">Home</a></li><li class="profile"><a href="#route" title="Route Info">Route Info</a></li><li class="setting"><a href="#livestatus" title="Live Status">Live Status</a></li><li><a href="#seatavail" title="Seat Availability">Seat Availability</a></li><li class="report"><a onclick="redirectToMap();" title="Map View">Map View</a></li><li><a href="index.html" title="Go Back">Go Back</a></li></ul></div>';
 
 $(document).one('pagebeforecreate', function () {
     $.mobile.pageContainer.prepend(panel);
@@ -7,17 +7,29 @@ $(document).one('pagebeforecreate', function () {
 });
 
 //-------------------------------------------------Spinner Method-----------------------------------------
-$(document).ajaxStart(function () {
-    $("#wait").css("display", "block");
+/*$(document).ajaxStart(function () {
+    ("#wait").css("display", "block");
 
 });
 $(document).ajaxComplete(function () {
     $("#wait").css("display", "none");
+	
+});*/
+$(document).on('ajaxStart', function(){     
+    setTimeout(function(){
+        $.mobile.loading('show');
+    },1);    
+});
 
+$(document).on('ajaxComplete', function(){  
+    setTimeout(function(){
+        $.mobile.loading('hide');
+    },300);      
 });
 
 
-//side panel ended
+
+//side panel endeds
 var stcode1 = "";
 var stcode2 = "";
 var trainNo = [];
@@ -153,22 +165,30 @@ function getStops() {
     }
     // Get todays date
     //Get current date-http://stackoverflow.com/questions/1531093/how-to-get-current-date-in-javascript
-function getTodayDate() {
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
-    var yyyy = today.getFullYear();
+function getToday() {
+    var month = new Array();
+    month[0] = "January";
+    month[1] = "February";
+    month[2] = "March";
+    month[3] = "April";
+    month[4] = "May";
+    month[5] = "June";
+    month[6] = "July";
+    month[7] = "August";
+    month[8] = "September";
+    month[9] = "October";
+    month[10] = "November";
+    month[11] = "December";
 
-    if (dd < 10) {
-        dd = '0' + dd
+    var d = new Date();
+    var mon = month[d.getMonth()];
+	var date = d.getDate(); 
+    var yyyy = d.getFullYear();
+
+    if (date < 10) {
+        date = '0' + date
     }
-
-    if (mm < 10) {
-        mm = '0' + mm
-    }
-
-    today = mm + '/' + dd + '/' + yyyy;
-
+	var today = date+"-"+mon+"-"+yyyy;
     return today;
 }
 
@@ -184,7 +204,7 @@ function getLiveStatus() {
     var apilink = 'http://api.erail.in/live/?key=3d970b43-550b-4568-9227-492697f47093&trainno=';
     apilink += trainno;
     apilink += "&stnfrom=" + stncode1;
-    apilink += "&date=" + getTodayDate();
+    apilink += "&date=" + getToday();
     console.log(apilink);
     $.ajax({
         type: 'GET',
@@ -192,7 +212,7 @@ function getLiveStatus() {
         dataType: 'json',
         success: function (data) {
             if (data.status == "OK") {
-                alert(data.result.name + "-" + data.result.trainno);
+                
                 document.getElementById('trainnm').innerHTML = data.result.name;
                 document.getElementById('trainid').innerHTML = data.result.trainno;
                 document.getElementById('delayrun').innerHTML = data.result.delayrun;

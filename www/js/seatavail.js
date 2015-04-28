@@ -1,26 +1,24 @@
 var quotas;
 var coachclass;
 var dateselected;
-var startStation = "";
-var endStation = "";
-var trainSelected = "";
+
 
 function goBack() {
     window.location.replace('HomePage.html');
 }
-$(document).ready(function (e) {
+$("#seatAvailibility").on(click,function () {
 
-    startStation = sessionStorage.getItem("startStation");
-    endStation = sessionStorage.getItem("endStation");
-    trainSelected = sessionStorage.getItem("trainSelected");
-
-    document.getElementById("from").innerHTML = startStation;
-    document.getElementById("to").innerHTML = endStation;
+    var startStation = sessionStorage.getItem("startStation");
+    var endStation = sessionStorage.getItem("endStation");
+    var trainSelected = sessionStorage.getItem("trainSelected");
+	alert(startStation);
+	document.getElementById("newfrom").innerHTML = startStation;
+    document.getElementById("newto").innerHTML = endStation;
 });
 
 // Get todays date
 //Get current date-http://stackoverflow.com/questions/1531093/how-to-get-current-date-in-javascript
-/*function getTodayDate() {
+function getTodayDate() {
             var today = new Date();
             var dd = today.getDate();
             var mm = today.getMonth() + 1; //January is 0!
@@ -34,10 +32,10 @@ $(document).ready(function (e) {
                 mm = '0' + mm
             }
 
-            today = dd + '/' + mm + '/' + yyyy;
+            today = dd + '-' + mm + '-' + yyyy;
 			$("#dateoftravel").val(today);
             return today;
-        }*/
+        }
 
 /*function convertDate(dateSelect) {
     var returnedFormat = dateSelect.split("-");
@@ -71,26 +69,65 @@ function searchSeatAvailibility() {
 
     saveUserInput();
     newDate = $("#dateoftravel").val();
-    //alert($("#dateoftravel").val());
-    //var newDate = "05-MAY-2015";
-    var apilink = 'http://api.erail.in/seats/?key=3d970b43-550b-4568-9227-492697f47093&trainno=' + trainSelected + "&stnfrom=" + stcode1 + "&stnto=" + stcode2 + "&quota=" + quotas + "&class=" + coachclass + "&date=" + newDate;
+    
+    var apilink = 'http://api.erail.in/seats/?key=3d970b43-550b-4568-9227-492697f47093&trainno=' + trainSelected + "&stnfrom=" + stcode1 + "&stnto=" + 		stcode2 + "&quota=" + quotas + "&class=" + coachclass + "&date=" + newDate;
     $.ajax({
         type: 'GET',
         url: apilink,
         dataType: 'json',
         success: function (data) {
             if (data.status == "OK") {
-                seatDetails += "<table border='1'><tr><th>Date</th><th>Seats</th></tr>";
+                seatDetails += "<li><h1>Date</h1><strong><p class='ui-li-aside'>Seats</p></strong></li>";
                 for (var i = 0; i < data.result.seats.length; i++) {
-                    seatDetails += "<tr><td>" + data.result.seats[i].date + "</td>";
-                    seatDetails += "<td>" + data.result.seats[i].seat + "</td>";
-                    seatDetails += "</tr>";
+                    seatDetails += "<li><h2>" + data.result.seats[i].date + "</h2>";
+                    seatDetails += "<p class='ui-li-aside'>" + data.result.seats[i].seat + "</p>";
+                    seatDetails += "</li>";
                 }
             } else {
                 seatDetails = data.status;
             }
             document.getElementById('seatResults').innerHTML = seatDetails;
 
+        },
+        error: function (x, e) {
+            alert('ERROR');
+        }
+
+    });
+}
+
+function fetchFareDetails() {
+
+   saveUserInput();
+    //http://api.erail.in/fare/?key=3d970b43-550b-4568-9227-492697f47093&trainno=12138&stnfrom=NDLS&stnto=CSTM&age=AD&quota=GN&date=05-MAY-2015
+   
+    var dateSelected = $("#dateoftravel").val();
+
+    var trainNo = sessionStorage.getItem("trainSelected");
+    var startStation = getStnCode(sessionStorage.getItem("startStation"));
+    var endStation = getStnCode(sessionStorage.getItem("endStation"));
+    document.getElementById('dateoftravel').value = dateSelected;
+    var newDate = convertDate(document.getElementById('dateoftravel').value);
+    //  dateSelected = "05-MAY-2015";
+    var link = "http://api.erail.in/fare/?key=3d970b43-550b-4568-9227-492697f47093&trainno=" + trainNo + "&stnfrom=" + startStation + "&stnto=" + endStation + "&age=AD" + "&quota=" + quotas + "&class=" + coachclass + "&date=" + newDate;
+
+    $.ajax({
+        type: 'GET',
+        url: link,
+        dataType: 'json',
+        success: function (data) {
+            if (data.status == "OK") {
+                
+                for (var i = 0; i < data.result.fare.length; i++) {
+                    fare = data.result.fare[i].fare;
+                }
+                document.getElementById('getfare').innerHTML = fare;
+				
+                
+            } else {
+				
+                document.getElementById('getfare').innerHTML = data.status;
+            }
         },
         error: function (x, e) {
             alert('ERROR');

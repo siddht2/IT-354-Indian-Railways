@@ -8,10 +8,23 @@
     <link rel="stylesheet" href="css/jquery-ui.min.css">
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic' rel='stylesheet' type='text/css'>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <link rel="stylesheet" href="css/index.css">
 
     <script>
+	
+	$(document).on('ajaxStart', function(){     
+		setTimeout(function(){
+			$.mobile.loading('show');
+		},1);    
+	});
+	
+	$(document).on('ajaxComplete', function(){  
+		setTimeout(function(){
+			$.mobile.loading('hide');
+		},300);      
+	});
         var stationList = [];
         var stationCode = [];
 
@@ -74,27 +87,34 @@
         }
     </script>
     <style>
-        IMG {
+        .ir {
             display: block;
             margin-left: auto;
             margin-right: auto;
-            height: auto;
-            width: 100%;
-        }
+            }
+			.fit{
+			height: auto;
+			width:100%;	
+			}
+			.content{
+			background-color:#493030;
+			}
     </style>
 </head>
 
 <body>
     <div data-role="page" id="flash">
-        <div data-role="header">
-            <h1>Welcome to Indian</h1>
-            <h1> Railways</h1>
+    	<span><br/><br/></span>
+        <div data-role="header" data-theme="b">
+            <span><h1>Welcome to</h1>
+            <h1> Indian Railways</h1></span>
         </div>
-        <div data-role="main" class="ui-content" style="align:center">
+        <div data-role="content" class="ui-content content" style="align:center">
+			
+            <a href="#pageone" class="ui-btn ui-btn-b">Click to Start</a>
+            <span><img class="ir" src="img/screenIR.jpeg" height="350" width="250"/></span>
 
-            <span><img src="img/screenIR.jpeg"/></span>
-
-            <a href="#pageone" class="ui-btn ui-icon-forward">Start</a>
+            
         </div>
 
         <div data-role="footer" data-position="fixed">
@@ -102,19 +122,19 @@
         </div>
     </div>
 
-    <div data-role="page" id="pageone">
+    <div data-role="page" id="pageone" data-theme="b">
         <div data-role="header">
-            <h2>Indian Railways</h2>
-            <img src="img/rail.png" id='headerImgs' />
+            <span><h1>Indian Railways</h1></span>
+            <img class="ir fit" src="img/rail.png" id='headerImgs' />
         </div>
-        <div data-role="navbar" data-iconpos="bottom">
-            <h2>Train Information from Indian Railways API</h2>
+        <div data-role="header" data-iconpos="bottom">
+            <span><h3>Train Information from Indian Railways API</h3></span>
         </div>
-        <div data-role="main" class="ui-content my-container">
+        <div data-role="main" class="ui-content my-container content">
             <form>
                 <div class="ui-widget">
                     From:
-                    <input id="tags1" placeholder="From city (ex.-Delhi)"> To:
+                    <input id="tags1"  placeholder="From city (ex.-Delhi)"> To:
                     <input id="tags2" placeholder="To city (ex. Mumbai)">
 
                 </div>
@@ -122,9 +142,7 @@
             </form>
 
         </div>
-        <div data-role="footer" data-position="fixed">
-            <h1>&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</h1>
-        </div>
+        
     </div>
 
 </body>

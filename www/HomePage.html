@@ -8,8 +8,8 @@
     <!--Global CSS and Scripts-->
     <link rel="stylesheet" href="js/jqm/jquery.mobile-1.4.5.min.css" />
     <link rel="stylesheet" href="css/jqm-demos.css">
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
-    <link rel="stylesheet" href="css/jquery.mobile.theme-1.4.5.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic' rel='stylesheet' type='text/css'>
+    
     <script src="js/jquery-2.1.3.js"></script>
     <script src="js/jqm/jquery.mobile-1.4.5.min.js"></script>
 
@@ -33,28 +33,31 @@
 
     <style>
         .ui-panel-animate {
-            transition: transform 1350ms ease 0s !important;
+            transition: transform 1000ms ease 0s !important;
         }
+		body .content{
+			background-color:#493030;
+		}
     </style>
 </head>
 
-<body>
+<body >
     <!------------------------------------HOME PAGE----------------------------------------------------->
 
     <div data-role="page" id="home" data-theme="b">
-        <!-- header -->
-        <div data-role="header"><a href="#mypanel" class="jqm-navmenu-link ui-btn-right" data-icon="bars" data-iconpos="notext">Navigation</a>
+        <!-- header --><span><br/></span>
+        <div data-role="header" class="jqm-home" ><a href="#mypanel" class="jqm-navmenu-link ui-btn-right" data-icon="bars" data-iconpos="notext">Navigation</a>
 
             <h1><span class="title">Home</span></h1>
 
         </div>
         
-        <div class="content" data-role="content">
+        <div class="content" data-role="content"  >
 
             <h3 class="header">Indian Railways</h3>
-            <div class="ui-grid-b ui-content ui-body-a" id="sodes">
+            <div class="ui-grid-b ui-content" data-theme="d"  id="sodes">
                 <div class="ui-block-a" style="text-align:center" data-vertical-centered id="from"></div>
-                <div class="ui-block-b" style="text-align:center"><span><IMG src="img/right-arrow-sm.png" width="25" height="inherit"></span>
+                <div class="ui-block-b" style="text-align:center"><span><IMG src="img/hand-pointer1-right.png" width="50px" height="50px"></span>
                 </div>
                 <div class="ui-block-c" id="to" style="text-align:center"></div>
             </div>
@@ -68,23 +71,23 @@
                     
                     <label for="select-train-dd">Select a train:</label>
                 
-                    <select name="select-train-dd" id="select-train-dd" onchange="onSelectValueInDropdown();" data-mini="false">
+                    <select name="select-train-dd" id="select-train-dd" data-ajax="true" onchange="onSelectValueInDropdown();" data-mini="false">
                     </select>
                     <div class="ui-grid-a ui-content" id="specificStations">
                         <div class="ui-block-a">
                             <label for="spStation1">Start:</label>
-                            <select name="spStation1" id="spStation1" onchange="onStationSelect();"></select>
+                            <select name="spStation1" id="spStation1" onchange="onStationSelect();" data-mini="true"></select>
                         </div>
                         <div class="ui-block-b">
                             <label for="spStation2">End:</label>
-                            <select name="spStation2" id="spStation2" onchange="onStationSelect();"></select>
+                            <select name="spStation2" id="spStation2" onchange="onStationSelect();" data-mini="true"></select>
                         </div>
                     </div>
 
                 </div>
             </form>
             <!--navbar-->
-            <div data-role="navbar" data-theme='a'>
+            <div data-role="navbar" data-theme='b'>
                 <ul>
                     <li><a href="#route" class="ui-shadow ui-btn ui-corner-all" onClick="getStops();" id="getstops">Route Info</a>
                     </li>
@@ -98,10 +101,10 @@
                     <li><a id="toMap" onclick="redirectToMap();" class="ui-shadow ui-btn ui-corner-all">Maps</a>
                     </li>
 
-                    <li><a href="SelectStations.html" class="ui-shadow ui-btn ui-corner-all">Go Back</a>
+                    <li><a href="index.html" class="ui-shadow ui-btn ui-corner-all">Go Back</a>
                     </li>
 
-                    <li><a href="#" class="ui-shadow ui-btn ui-corner-all">Train Status</a>
+                    <li><a href="#aboutus" class="ui-shadow ui-btn ui-corner-all">About Us</a>
                     </li>
 
 
@@ -126,7 +129,7 @@
             <a href="#home" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-arrow-l ui-corner-all">Back</a>
         </div>
         <!-- content -->
-        <div data-role="main" class="ui-content" id="routepage">
+        <div data-role="content" class="ui-content content" id="routepage">
             <h3>Train Name: <label id='trainname'></label></h3>
             <h3>Train No: <label id='trainno'></label></h3>
             <div id='displaystoplist'></div>
@@ -148,7 +151,7 @@
             <a href="#home" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-arrow-l ui-corner-all">Back</a>
         </div>
 
-        <div data-role="main" class="ui-content" id="statuspage">
+        <div data-role="content" class="ui-content content" id="statuspage">
             <label id='status'></label>
             <h3>Train Name: <label id='trainnm'></label></h3>
             <h3>Train No: <label id='trainid'></label></h3>
@@ -166,7 +169,7 @@
 
 
     <!------------------------------------Seat Availabilty--------------------------------------------->
-    <div data-role="page" id="seatavail">
+    <div data-role="page" id="seatavail" data-theme="b">
         <div data-role="header">
 
             <a href="#mypanel" class="jqm-navmenu-link ui-btn-right" data-icon="bars" data-iconpos="notext">Navigation</a>
@@ -175,18 +178,19 @@
             <a href="#home" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-arrow-l ui-corner-all">Back</a>
 
         </div>
-        <div class="ui-content">
+        
+        <div data-role="content" class="ui-content content">
+			<div class="ui-content">
             <h3>Indian Railways</h3>
-            <div class="ui-grid-b ui-content" id="sodes">
-                <div class="ui-block-a" style="text-align:center" data-vertical-centered id="from"></div>
+            <!--<div class="ui-grid-b ui-content" id="sodes">
+                <div class="ui-block-a" style="text-align:center" data-vertical-centered id="newfrom"></div>
                 <div class="ui-block-b" style="text-align:center">
-                    <span><IMG src="img/right-arrow-sm.png" width="25" height="inherit"></span>
+                    <span><img src="img/Right-Arrow-Icon.png" width="35" height="35"/>
+                    </span>
                 </div>
-                <div class="ui-block-c" id="to" style="text-align:center"></div>
-            </div>
+                <div class="ui-block-c" id="newto" style="text-align:center"></div>
+            </div>-->
         </div>
-        <div data-role="content" class="ui-content">
-
            
 
             <label for="bday">Date:</label>
@@ -200,16 +204,6 @@
                     <select id="quotas">
                         <option value="GN">General Quota</option>
                         <option value="CK">Tatkal Quota</option>
-<!--
-                        <option value="LD">Ladies Quota</option>
-                        <option value="DF">Defence Quota</option>
-                        <option value="FT">Foreign Tourist</option>
-                        <option value="DP">Duty Pass Quota</option>
-                        <option value="HP">Handicapped Quota</option>
-                        <option value="PH">Parliament House Quota</option>
-                        <option value="SS">Lower Berth Quota</option>
-                        <option value="YU">Yuva Quota</option>
--->
                     </select>
                 </div>
                 <div class="ui-block-b">
@@ -218,10 +212,12 @@
                 </div>
             </div>
             <button id="searchSeatAvailibility" onclick="searchSeatAvailibility();">Check availibility</button>
-            <a href="#getfare" class="ui-btn" onclick="redirectToFares();">Fares</a>
+            <a class="ui-btn" onclick="fetchFareDetails();">Fares</a>
+			<button id="getfare" disabled hidden="true" style="background-color:#219B1C"></button>
+            <div data-demo-html="true">
+            <ul data-role="listview" data-inset="true" id="seatResults">
 
-            <div id="seatResults">
-
+            </ul>
             </div>
         </div>
         <div data-role="footer" data-position="fixed">
@@ -229,37 +225,27 @@
         </div>
     </div>
 
-    <!------------------------------------------Fare Page------------------------------------------------>
-    <div data-role="page" id="getfare" onload="onPageLoad();">
+    <!------------------------------------------About Us Page------------------------------------------------>
+    <div data-role="page" id="aboutus" >
         <div data-role="header">
             <a href="#mypanel" class="jqm-navmenu-link ui-btn-right" data-icon="bars" data-iconpos="notext">Navigation</a>
 
-            <h1><span class="title">Fare</span></h1>
+            <h1><span class="title">About Us</span></h1>
             <a href="#home" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-arrow-l ui-corner-all">Back</a>
         </div>
-        <div class="ui-content">
-            <div class="ui-grid-b ui-content" id="sodes">
-                <div class="ui-block-a" style="text-align:center" data-vertical-centered id="from"></div>
-                <div class="ui-block-b" style="text-align:center">
-                    <span><IMG src="img/right-arrow-sm.png" width="25" height="inherit"></span>
-                </div>
-                <div class="ui-block-c" id="to" style="text-align:center"></div>
-            </div>
+        <div data-role="content" class="ui-content">
+            <h3>About the app</h3>
+        <p>This application provides you with most of the details about our 'INDIAN RAILWAYS'. This app helps you go through the whole Indian Railway database, fetch relevant and useful data and display to you. This application was our academic project and we tried our best to provide you with all features that could be useful. We mainly focussed on user-friendly interface. </p>
+        <h3>Developers</h3>
+        <ul>
+            <li>Harshit Gindra</li>
+            <li>Kushal Tare</li>
+            <li>Sudhanshu Mehrotra</li>
+        </ul>
+        <h3>Contact us</h3>
+        <h4>Drop us a mail in case of any suggestions or bugs reported in application. Thank you.</h4>
         </div>
-        <div data-role="main" class="ui-content">
-
-
-            <label for="bday">Date:</label>
-            <input type="text" name="bday" data-role="date" data-date-format="dd-M-yy" id="farefortravel" />
-            <button id="updateFare" onclick="FetchAllData();">Get Updated Fares</button>
-            <button id="payfortickets" onclick="directToPayment();">Payment</button>
-            <div id="fareDetails"></div>
-            <h2 id="onlyFare"></h2>
-        </div>
-        <div data-role="footer" data-position="fixed">
-            <h1>&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</h1>
-        </div>
-    </div>
+     </div>
 
 </body>
 
