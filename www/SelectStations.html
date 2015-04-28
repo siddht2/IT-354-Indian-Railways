@@ -6,39 +6,133 @@
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
+   
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <link rel="stylesheet" href="css/index.css">
+    <style>
+        #headerImgs{height:auto; width:100%;}
+    @media screen 
+	  and (device-width: 360px) 
+	  and (device-height: 640px) 
+	  and (-webkit-device-pixel-ratio: 3) 
+	  and (orientation: portrait) {
+		#headerImgs{height:auto; width:100%;}
+		.my-container {
+			position: relative;
+			background: #FFFFFF;
+			overflow: hidden;
+		}
+		.my-container:before {
+			content: ' ';
+			display: block;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 1;
+			opacity: 0.4;
+			background-image: url(img/body_background.jpg);
+			background-repeat: no-repeat;
+			background-position: center;
+			-ms-background-size: cover;
+			-o-background-size: cover;
+			-moz-background-size: cover;
+			-webkit-background-size: cover;
+			background-size: cover;
+		}
+		.my-container form {
+			padding: 50px;
+			text-align: center;
+			z-index: 2;
+			position: relative;
+			color: #000;
+		} 
+	}
+    </style>
+</head>
+
+<body>
+	<div data-role="page" id="flash">
+        <div data-role="header">
+            <h1>Welcome to Indian</h1><h1> Railways</h1>
+        </div>
+        <div data-role="main" class="ui-content" style="align:center">
+                        
+                <IMG src="img/screenIR.jpeg".png" alt="indeximage" id='indexImage' style="display: block;
+    margin-left: auto;
+    margin-right: auto">
+                
+                <a href="#pageone" class="ui-btn ui-icon-forward">Start</a>
+            </div>
+        
+        <div data-role="footer" data-position="fixed">
+            <h1>&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</h1>
+        </div>
+    </div>
     
-     <script>
+    <div data-role="page" id="pageone">
+        <div data-role="header">
+            <h2>Indian Railways</h2>
+            <img src="img/background.jpg" id='headerImgs' height="100%" width="100%">
+        </div>
+        <div data-role="navbar" data-iconpos="bottom">
+            <h2>Train Information from Indian Railways API</h2>
+        </div>
+        <div data-role="main" class="ui-content my-container">
+            <form>
+                <div class="ui-widget">
+                    From:
+                    <input id="tags1" placeholder="From city (ex.-Delhi)">
+                    To:
+                    <input id="tags2" placeholder="To city (ex. Mumbai)">
+                    
+                </div>
+                <a href="HomePage.html" class="ui-btn ui-corner-all" onclick="storeSessionVariables();">Get Results</a>
+            </form>
+            
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <h1>&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</h1>
+        </div>
+    </div>
+    <script>
         var stationList = [];
         var stationCode = [];
-
-
-        function preloadStationList() {
-           
+		
+       $( document ).on( "pageinit", "#pageone", function() { 
+		
             $.ajax({
                 type: 'GET',
                 url: 'http://api.erail.in/stations/?key=3d970b43-550b-4568-9227-492697f47093',
                 dataType: 'json',
                 success: function (data) {
-
+						
                     for (var i = 0; i < data.length; i++) {
-                        stationList[i] = data[i].name;
+                        
+						stationList[i] = data[i].name;
+				
                         stationCode[i] = data[i].code;
                     }
+					$ul1.html(namearr);
+					$ul2.html(namearr);
                 },
                 error: function (x, e) {
                     alert('ERROR');
                 }
             });
-        }
+        });
 
         $(function () {
             $("#tags1").autocomplete({
+				
                 source: stationList
+				
+			
             });
         });
 
@@ -47,6 +141,12 @@
                 source: stationList
             });
         });
+
+//---------------------------------jQuery Autocomplete Testing------------------------------------//
+	
+
+
+//-----------------------------------------------------------------------------------------------//
 
         function storeSessionVariables() {
             var startStationName = document.getElementById('tags1').value;
@@ -61,45 +161,14 @@
                 
 
                 // Store variable in local storage (Acts as session). Feature of HTML 5
-                localStorage.setItem("st1", stCode1);//old station1
-                localStorage.setItem("st2", stCode2);
-                localStorage.setItem("stName1", startStationName);
-                localStorage.setItem("stName2", endStationName);
-//                 localStorage.setItem("station1", stCode1);
-//                localStorage.setItem("station2", stCode2);
-//                localStorage.setItem("startStation", startStationName);
-//                localStorage.setItem("endStation", endStationName);
-                  window.location.replace("TrainsList.html");
+                localStorage.setItem("station1", stCode1);
+                localStorage.setItem("station2", stCode2);
+                localStorage.setItem("startStation", startStationName);
+                localStorage.setItem("endStation", endStationName);
                 
             }
         }
     </script>
-</head>
-
-<body onload="preloadStationList()">
-    <div data-role="page" id="pageone">
-        <div data-role="header">
-            <h2>Indian Railways</h2>
-            <img src='img/header.jpg' id='headerImgs'>
-        </div>
-        <div data-role="navbar" data-iconpos="bottom">
-            <h2>Train Information from Indian Railways API</h2>
-        </div>
-        <div data-role="main" class="ui-content">
-            <form>
-                <div class="ui-widget">
-                    Station 1:
-                    <input id="tags1" placeholder="Select Station 1"> Station 2:
-                    <input id="tags2" placeholder="Select Station 2">
-                </div>
-                <a class="ui-btn ui-corner-all" onclick="storeSessionVariables();">Get Results</button>
-            </form>
-        </div>
-        <div data-role="footer" data-position="fixed">
-            <h1>&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</h1>
-        </div>
-    </div>
-   
 </body>
 
 </html>

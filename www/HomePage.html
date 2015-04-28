@@ -1,0 +1,266 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=no; target-densityDpi=device-dpi" />
+    <meta charset="utf-8">
+    <title>Home Page</title>
+    <!--Global CSS and Scripts-->
+    <link rel="stylesheet" href="js/jqm/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="css/jqm-demos.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    <link rel="stylesheet" href="css/jquery.mobile.theme-1.4.5.min.css">
+    <script src="js/jquery-2.1.3.js"></script>
+    <script src="js/jqm/jquery.mobile-1.4.5.min.js"></script>
+
+    <!--Home Page Script-->
+    <script src="js/homepage.js"></script>
+    <!--Seat Availability Script-->
+    <script src="js/seatavail.js"></script>
+    <!--<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>-->
+    <!--jQuery UI-->
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <script src="http://view.jqueryui.com/master/ui/datepicker.js"></script>
+    <!--jQuery Mobil-->
+    <!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">  
+<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>-->
+    <!-- jQuery Mobile Datepicker -->
+    <link href="http://rawgithub.com/arschmitz/jquery-mobile-datepicker-wrapper/master/jquery.mobile.datepicker.css" rel="stylesheet">
+    <script src="http://rawgithub.com/arschmitz/jquery-mobile-datepicker-wrapper/master/jquery.mobile.datepicker.js"></script>
+
+    <!--Fare Script-->
+    <script src="js/fare.js"></script>
+
+    <style>
+        .ui-panel-animate {
+            transition: transform 1350ms ease 0s !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!------------------------------------HOME PAGE----------------------------------------------------->
+
+    <div data-role="page" id="home" data-theme="b">
+        <!-- header -->
+        <div data-role="header"><a href="#mypanel" class="jqm-navmenu-link ui-btn-right" data-icon="bars" data-iconpos="notext">Navigation</a>
+
+            <h1><span class="title">Home</span></h1>
+
+        </div>
+        
+        <div class="content" data-role="content">
+
+            <h3 class="header">Indian Railways</h3>
+            <div class="ui-grid-b ui-content ui-body-a" id="sodes">
+                <div class="ui-block-a" style="text-align:center" data-vertical-centered id="from"></div>
+                <div class="ui-block-b" style="text-align:center"><span><IMG src="img/right-arrow-sm.png" width="25" height="inherit"></span>
+                </div>
+                <div class="ui-block-c" id="to" style="text-align:center"></div>
+            </div>
+            <!-- /grid-b -->
+                 <div id="wait" style="display:none;width:69px;height:89px;border:1px solid black;position:absolute;top:50%;left:50%;padding:2px;"><img src='img/ajax-loader.gif' width="64" height="64" /><br>Loading..</div>
+            <form>
+                <div class="ui-field-contain">
+                    
+                
+                    
+                    
+                    <label for="select-train-dd">Select a train:</label>
+                
+                    <select name="select-train-dd" id="select-train-dd" onchange="onSelectValueInDropdown();" data-mini="false">
+                    </select>
+                    <div class="ui-grid-a ui-content" id="specificStations">
+                        <div class="ui-block-a">
+                            <label for="spStation1">Start:</label>
+                            <select name="spStation1" id="spStation1" onchange="onStationSelect();"></select>
+                        </div>
+                        <div class="ui-block-b">
+                            <label for="spStation2">End:</label>
+                            <select name="spStation2" id="spStation2" onchange="onStationSelect();"></select>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+            <!--navbar-->
+            <div data-role="navbar" data-theme='a'>
+                <ul>
+                    <li><a href="#route" class="ui-shadow ui-btn ui-corner-all" onClick="getStops();" id="getstops">Route Info</a>
+                    </li>
+
+                    <li><a href="#liveStatus" class="ui-shadow ui-btn ui-corner-all" onClick="getLiveStatus();" id="livestatus">Live Status</a>
+                    </li>
+
+                    <li><a href="#seatavail" id="seatAvailibility" onclick="setVariables();" class="ui-shadow ui-btn ui-corner-all">Seat Availability</a>
+                    </li>
+
+                    <li><a id="toMap" onclick="redirectToMap();" class="ui-shadow ui-btn ui-corner-all">Maps</a>
+                    </li>
+
+                    <li><a href="SelectStations.html" class="ui-shadow ui-btn ui-corner-all">Go Back</a>
+                    </li>
+
+                    <li><a href="#" class="ui-shadow ui-btn ui-corner-all">Train Status</a>
+                    </li>
+
+
+
+                </ul>
+            </div>
+            <!-- /navbar -->
+
+        </div>
+        <div data-role="footer" data-position="fixed" class="ui-footer">
+            <h1><span class="footer">&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</span></h1>
+        </div>
+    </div>
+
+    <!-----------------------------------Route Page------------------------------------------------>
+    <div data-role="page" data-theme="b" id="route" onload="script1();">
+        <!-- header -->
+        <div data-role="header">
+            <a href="#mypanel" class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all"></a>
+
+            <h1><span class="title">Route</span></h1>
+            <a href="#home" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-arrow-l ui-corner-all">Back</a>
+        </div>
+        <!-- content -->
+        <div data-role="main" class="ui-content" id="routepage">
+            <h3>Train Name: <label id='trainname'></label></h3>
+            <h3>Train No: <label id='trainno'></label></h3>
+            <div id='displaystoplist'></div>
+        </div>
+
+        <div data-role="footer" data-position="fixed" class="ui-footer">
+            <h1><span class="footer">&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</span></h1>
+        </div>
+    </div>
+
+    <!-----------------------------------Live Status Page----------------------------------------->
+
+    <div data-role="page" data-theme="b" id="liveStatus">
+        <!-- header -->
+        <div data-role="header">
+            <a href="#mypanel" class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all"></a>
+
+            <h1><span class="title">Live Status</span></h1>
+            <a href="#home" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-arrow-l ui-corner-all">Back</a>
+        </div>
+
+        <div data-role="main" class="ui-content" id="statuspage">
+            <label id='status'></label>
+            <h3>Train Name: <label id='trainnm'></label></h3>
+            <h3>Train No: <label id='trainid'></label></h3>
+            <h3>Dealyed By: <label id='delayrun'></label></h3>
+            <h3>Status @: <label id='statusat'></label></h3>
+            <h3>Status msg: <label id='statusmsg'></label></h3>
+            <h3>Platform: <label id='platform'></label></h3>
+
+        </div>
+
+        <div data-role="footer" data-position="fixed" class="ui-footer">
+            <h1><span class="footer">&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</span></h1>
+        </div>
+    </div>
+
+
+    <!------------------------------------Seat Availabilty--------------------------------------------->
+    <div data-role="page" id="seatavail">
+        <div data-role="header">
+
+            <a href="#mypanel" class="jqm-navmenu-link ui-btn-right" data-icon="bars" data-iconpos="notext">Navigation</a>
+
+            <h1><span class="title">Seat Availabilty</span></h1>
+            <a href="#home" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-arrow-l ui-corner-all">Back</a>
+
+        </div>
+        <div class="ui-content">
+            <h3>Indian Railways</h3>
+            <div class="ui-grid-b ui-content" id="sodes">
+                <div class="ui-block-a" style="text-align:center" data-vertical-centered id="from"></div>
+                <div class="ui-block-b" style="text-align:center">
+                    <span><IMG src="img/right-arrow-sm.png" width="25" height="inherit"></span>
+                </div>
+                <div class="ui-block-c" id="to" style="text-align:center"></div>
+            </div>
+        </div>
+        <div data-role="content" class="ui-content">
+
+           
+
+            <label for="bday">Date:</label>
+            <input type="text" name="bday" data-role="date" data-date-format="dd-M-yy" id="dateoftravel" />
+
+
+<p id="daysrunning"></p>
+
+            <div class="ui-grid-a ui-content" id="specificStations">
+                <div class="ui-block-a">
+                    <select id="quotas">
+                        <option value="GN">General Quota</option>
+                        <option value="CK">Tatkal Quota</option>
+<!--
+                        <option value="LD">Ladies Quota</option>
+                        <option value="DF">Defence Quota</option>
+                        <option value="FT">Foreign Tourist</option>
+                        <option value="DP">Duty Pass Quota</option>
+                        <option value="HP">Handicapped Quota</option>
+                        <option value="PH">Parliament House Quota</option>
+                        <option value="SS">Lower Berth Quota</option>
+                        <option value="YU">Yuva Quota</option>
+-->
+                    </select>
+                </div>
+                <div class="ui-block-b">
+                    <select id="trainclass">
+                    </select>
+                </div>
+            </div>
+            <button id="searchSeatAvailibility" onclick="searchSeatAvailibility();">Check availibility</button>
+            <a href="#getfare" class="ui-btn" onclick="redirectToFares();">Fares</a>
+
+            <div id="seatResults">
+
+            </div>
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <h1>&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</h1>
+        </div>
+    </div>
+
+    <!------------------------------------------Fare Page------------------------------------------------>
+    <div data-role="page" id="getfare" onload="onPageLoad();">
+        <div data-role="header">
+            <a href="#mypanel" class="jqm-navmenu-link ui-btn-right" data-icon="bars" data-iconpos="notext">Navigation</a>
+
+            <h1><span class="title">Fare</span></h1>
+            <a href="#home" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-arrow-l ui-corner-all">Back</a>
+        </div>
+        <div class="ui-content">
+            <div class="ui-grid-b ui-content" id="sodes">
+                <div class="ui-block-a" style="text-align:center" data-vertical-centered id="from"></div>
+                <div class="ui-block-b" style="text-align:center">
+                    <span><IMG src="img/right-arrow-sm.png" width="25" height="inherit"></span>
+                </div>
+                <div class="ui-block-c" id="to" style="text-align:center"></div>
+            </div>
+        </div>
+        <div data-role="main" class="ui-content">
+
+
+            <label for="bday">Date:</label>
+            <input type="text" name="bday" data-role="date" data-date-format="dd-M-yy" id="farefortravel" />
+            <button id="updateFare" onclick="FetchAllData();">Get Updated Fares</button>
+            <button id="payfortickets" onclick="directToPayment();">Payment</button>
+            <div id="fareDetails"></div>
+            <h2 id="onlyFare"></h2>
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <h1>&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</h1>
+        </div>
+    </div>
+
+</body>
+
+</html>

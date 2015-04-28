@@ -2,143 +2,87 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->
-    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-    <!-- Google Maps API -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="js/seatavail.js"></script>
+    <!--jQuery-->
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <!--jQuery UI-->
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <script src="http://view.jqueryui.com/master/ui/datepicker.js"></script>
+    <!--jQuery Mobil-->
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+    <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+    <!-- jQuery Mobile Datepicker -->
+    <link href="http://rawgithub.com/arschmitz/jquery-mobile-datepicker-wrapper/master/jquery.mobile.datepicker.css" rel="stylesheet">
+    <script src="http://rawgithub.com/arschmitz/jquery-mobile-datepicker-wrapper/master/jquery.mobile.datepicker.js"></script>
 
     <!-- Google CDN for jQuery -->
 
-    <script>
-        var quotas;
-        var coachclass;
-        var dateselected;
 
-
-        function goBack() {
-            window.location.replace('SelectStations.html');
-        }
-
-        function convertDate(dateSelect) {
-            var returnedFormat = dateSelect.split("-");
-            var dateIs = returnedFormat[2]; //Gets Date
-            var yearIs = returnedFormat[0]; // Gets Year
-            //For Getting Month
-            var d = new Date(dateSelect);
-            var stringDate = d.toString();
-            var splitDate = stringDate.split(" ");
-            var monthIs = splitDate[1].toUpperCase();
-
-            var finalString = dateIs + "-" + monthIs + "-" + yearIs;
-            return finalString;
-        }
-
-        function searchSeatAvailibility() {
-            var seatDetails = "";
-            var stcode1 = localStorage.getItem("station1");
-            var a = stcode1.split("-");
-            stcode1 = a[0];
-            //stcode1 = "NDLS"
-            var stcode2 = localStorage.getItem("station2");
-            var b = stcode2.split("-");
-            stcode2 = b[0];
-            //stcode2 = "CSTM"
-            var trainSelected = localStorage.getItem("trainSelected");
-
-           saveUserInput();
-            var newDate = convertDate(dateselected);
-            // dateselected = "05-MAY-2015";
-            var apilink = 'http://api.erail.in/seats/?key=3d970b43-550b-4568-9227-492697f47093&trainno=' + trainSelected + "&stnfrom=" + stcode1 +                          "&stnto=" + stcode2 + "&quota=" + quotas + "&class=" + coachclass + "&date=" + newDate;
-            $.ajax({
-                type: 'GET',
-                url: apilink,
-                dataType: 'json',
-                success: function (data) {
-                    if (data.status == "OK") {
-                        seatDetails += "<table border='1'><tr><th>Date</th><th>Seats</th></tr>";
-                        for (var i = 0; i < data.result.seats.length; i++) {
-                            seatDetails += "<tr><td>" + data.result.seats[i].date + "</td>";
-                            seatDetails += "<td>" + data.result.seats[i].seat + "</td>";
-                            seatDetails += "</tr>";
-                        }
-                    } else {
-                        seatDetails = data.status;
-                    }
-                    document.getElementById('seatResults').innerHTML = seatDetails;
-
-                },
-                error: function (x, e) {
-                    alert('ERROR');
-                }
-
-            });
-        }
-
-        function saveUserInput() {
-            quotas = document.getElementById('quotas').value;
-            coachclass = document.getElementById('trainclass').value;
-            dateselected = document.getElementById('dateoftravel').value;
-        }
-
-        function redirectToFares() {
-
-            localStorage.setItem("dateSelected", dateselected);
-            localStorage.setItem("coachClass", coachclass);
-            localStorage.setItem("quota", quotas);
-            window.location.replace("GetFares.html");
-        }
-    </script>
 
 </head>
 
 <body>
     <div data-role="page" id="pageone">
-        <h1>Seat Availibility</h1>
         <div data-role="header">
-            <h1>Indian Railways</h1>
-            <h2>        
-              <label id='station1'></label> >> <label id='station2'></label></h2>
-        </div>
-        <div data-role="main" class="ui-content">
+            <div data-role="header">
+                <a href="#mypanel" class="jqm-navmenu-link ui-btn-right" data-icon="bars" data-iconpos="notext">Navigation</a>
 
-            <p>Select Date</p>
-            <p>Date:
-                <input type="date" name="bday" id="dateoftravel" />
-                <select id="quotas">
-                    <option value="GN">General Quota</option>
-                    <option value="CK">Tatkal Quota</option>
-                    <option value="LD">Ladies Quota</option>
-                    <option value="DF">Defence Quota</option>
+                <h1><span class="title">Seat Availabilty</span></h1>
+                <a onClick="goBack();" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-arrow-l ui-corner-all">Back</a>
+            </div>
+        </div>
+        <div class="ui-content">
+            <h3>Indian Railways</h3>
+            <div class="ui-grid-b ui-content" id="sodes">
+                <div class="ui-block-a" style="text-align:center" data-vertical-centered id="from"></div>
+                <div class="ui-block-b" style="text-align:center"><span><IMG src="img/right-arrow-sm.png" width="25" height="inherit"></span>
+                </div>
+                <div class="ui-block-c" id="to" style="text-align:center"></div>
+            </div>
+        </div>
+        <div data-role="content" class="ui-content">
+
+
+            <label for="bday">Date:</label>
+            <input type="text" name="bday" data-role="date" data-date-format="dd-M-yy" id="dateoftravel" />
+
+            <select id="quotas">
+                <option value="GN">General Quota</option>
+                <option value="CK">Tatkal Quota</option>
+                <option value="LD">Ladies Quota</option>
+                <option value="DF">Defence Quota</option>
+                <!--
                     <option value="FT">Foreign Tourist</option>
                     <option value="DP">Duty Pass Quota</option>
                     <option value="HP">Handicapped Quota</option>
                     <option value="PH">Parliament House Quota</option>
                     <option value="SS">Lower Berth Quota</option>
-                    <option value="YU">Yuva Quota</option>
-                </select>
+ <option value="YU">Yuva Quota</option>
+-->
 
-                <select id="trainclass">
-                    <option value="SL">Sleeper</option>
-                    <option value="GN">General</option>
-                    <option value="1A">First AC</option>
+            </select>
+
+            <select id="trainclass">
+                
+                <option value="SL">Sleeper</option>
+                <option value="GN">General</option>
+                <option value="1A">First AC</option>
+                <!--
                     <option value="2A">2 Tier AC</option>
                     <option value="3A">First AC</option>
                     <option value="CC"> 3 Tier AC</option>
                     <option value="FC"> Chair Car</option>                  
-                  
-                </select>
-                <button id="searchSeatAvailibility" onclick="searchSeatAvailibility();">Check availibility</button>
-                <button id="getFares" onclick="redirectToFares();">Fares</button>
-                <div id="seatResults">
+-->
 
-                </div>
+            </select>
+            <button id="searchSeatAvailibility" onclick="searchSeatAvailibility();">Check availibility</button>
+            <button id="getFares" onclick="redirectToFares();">Fares</button>
+
+            <div id="seatResults">
+
+            </div>
         </div>
         <div data-role="footer" data-position="fixed">
             <h1>&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</h1>

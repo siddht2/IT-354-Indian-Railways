@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<title>jQuery Mobile Panel - Hongkiat.com</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+<link rel="stylesheet" href="css/style.mobile.css" />
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="js/jqm/jquery.mobile-1.4.5.css">
+<link rel="stylesheet" href="js/jqm/jquery.mobile.theme-1.4.5.min.css">
+<link rel="stylesheet" href="js/jqm/jquery.mobile.icons-1.4.5.min.css">
+
+<script src="../../ui/source/js/jquery.js"></script>
+<script src="../../ui/source/js/jquery.mobile.js"></script>
+<script src="js/homepage.js"></script>
+<script>
+    $(document).on('pagebeforeshow', '[data-role="page"]', function(){                
+    $('<div>').attr({'id':'mypanel','data-role':'panel'}).appendTo($(this));
+    $('<a>').attr({'id':'test-btn','data-role':'button'}).html('Click me').appendTo('mypanel');
+    $.mobile.activePage.find('#mypanel').panel();
+    $(document).on('click', '#open-panel', function(){   
+         $.mobile.activePage.find('#mypanel').panel("open");       
+    });    
+});
+    </script> 
+    <style>
+    .ui-panel-animate {
+    transition: transform 1350ms ease 0s !important;
+}
+    </style> 
+
+</head>
+
+<body>
+	
+
+	<div class="demo-wrapper" data-role="page" id="home">
+        <!-- panel 01--> 
+        <div class="panel right" data-role="panel" data-position="right" data-display="push" id="panel-01">
+            <ul>
+                <li class="newsfeed"><a href="#" title="Home">Home</a></li>
+                <li class="profile"><a href="#route" title="Route Info">Route Info</a></li>
+                <li class="setting"><a href="#livestatus" title="Live Status">Live Status</a></li>
+                <li class="logout"><a href="#" title="Train Status">Train Status</a></li>
+                <li class="report"><a href="#mapmarker" title="Map View">Map View</a></li>
+            </ul>
+        </div>
+		<div class="header" data-role="header">
+			<span class="open right"><a href="#panel-01">&#61641;</a></span>
+            <span class="title">Home</span>
+			
+		</div>
+        <div class="content" data-role="content">
+            
+                <h3 class="header">Indian Railways</h3>
+                
+     			<form>
+                <div class="ui-field-contain">
+                    <label for="train-select">Train:</label>
+                    <select name="select-train-dd" id="select-train-dd" onchange="onSelectValueInDropdown();" data-mini="false">
+                    </select>
+                </div>
+                </form>
+                 <div data-role="navbar" data-theme='a'>
+                    <ul>
+                        <li><a href="#route" class="ui-shadow ui-btn ui-corner-all">Route Info</a></li>
+            
+                        <li><a href="#liveStatus" class="ui-shadow ui-btn ui-corner-all">Live Status</a></li>
+            
+                        <li><a href="#" class="ui-shadow ui-btn ui-corner-all">Train Status</a></li>
+            
+            
+                        <li><a href="#mapmarker" class="ui-shadow ui-btn ui-corner-all">Maps</a></li>
+            
+            			<li><a href="#" class="ui-shadow ui-btn ui-corner-all">Go Back</a></li>
+                        
+                        <li><a href="#" class="ui-shadow ui-btn ui-corner-all">Maps</a></li>
+                        
+                        
+            
+                    </ul>
+                </div><!-- /navbar -->
+                            
+        </div>
+    	<div data-role="footer" data-position="fixed" class="ui-footer">
+            <h1><span class="footer">&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</span></h1>
+        </div>
+	</div><!-- /Main page -->
+    
+    <!--Route page-->
+
+    <div data-role="page" id="route">
+        <div class="header" data-role="header">
+        	<a href="#home" class="ui-btn-left">Back</a>
+			<span class="title">Route</span>
+			<span class="open right"><a href="#panel-01">&#61641;</a></span>
+		</div>
+
+        <div data-role="main" class="ui-content" id="routepage">
+            <h3>Train Name: <label id='trainname'></label></h3>
+            <h3>Train No: <label id='trainno'></label></h3>
+            <div id='displaystoplist'></div>
+        </div>
+        
+        <div data-role="footer" data-position="fixed" class="ui-footer">
+            <h1><span class="footer">&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</span></h1>
+        </div>
+    </div>
+
+    <!--Live Status page-->
+
+    <div data-role="page" id="liveStatus">
+        <div class="header" data-role="header">
+        	<a href="#home" class="ui-btn-left">Back</a>
+			<span class="title">Live Status</span>
+			<span class="open right"><a href="#panel-01">&#61641;</a></span>
+		</div>
+
+        <div data-role="main" class="ui-content" id="statuspage">
+            <label id='status'></label>
+            <h3>Train Name: <label id='trainnm'></label></h3>
+            <h3>Train No: <label id='trainid'></label></h3>
+            <h3>Dealyed By: <label id='delayrun'></label></h3>
+            <h3>Status @: <label id='statusat'></label></h3>
+            <h3>Status msg: <label id='statusmsg'></label></h3>
+            <h3>Platform: <label id='platform'></label></h3>
+
+        </div>
+        
+        <div data-role="footer" data-position="fixed" class="ui-footer">
+            <h1><span class="footer">&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</span></h1>
+        </div>
+    </div>
+
+    <!--Map Page-->
+
+    <div data-role="page" id="mapmarker">
+        <div class="header" data-role="header">
+        	<a href="#home" class="ui-btn-left">Back</a>
+			<span class="title">Map View</span>
+			<span class="open right"><a href="#panel-01">&#61641;</a></span>
+		</div>
+
+        <div data-role="main" class="ui-content" id="map-canvas">
+           
+				<!--<div id='map-canvas'></div> -->
+		</div>	
+            <br/>
+           <div data-role="footer" data-position="fixed" class="ui-footer">
+            <h1><span class="footer">&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</span></h1>
+        </div> 
+     </div>
+     
+     
+</body>
+</html>

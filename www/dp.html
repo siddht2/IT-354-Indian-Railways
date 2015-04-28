@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--jQuery-->
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<!--jQuery UI-->
+<script src="http://view.jqueryui.com/master/ui/datepicker.js"></script>
+<!--jQuery Mobil--> 
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">  
+<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+<!-- jQuery Mobile Datepicker -->
+<link href="http://rawgithub.com/arschmitz/jquery-mobile-datepicker-wrapper/master/jquery.mobile.datepicker.css" rel="stylesheet">
+<script src="http://rawgithub.com/arschmitz/jquery-mobile-datepicker-wrapper/master/jquery.mobile.datepicker.js"></script>
+</head>
+
+<body>
+
+<div data-role="page" id="pageone">
+<div data-role="header">
+<h1>Start</h1>
+</div>
+
+<div data-role="main" class="ui-content"> 
+<form action="this.php" method="post" data-ajax="true">
+<label for="gebdat">Date</label>
+<input type="text" name="gebdat" data-role="date" data-date-format="dd-M-yy" >
+<button type="submit" name="submit" class="ui-btn-hidden" data-icon="edit" aria-disabled="false">Save</button>
+
+</form>
+ </div>
+
+  <div data-role="footer">
+    <h1>End</h1>
+  </div>
+</div> 
+
+</body>
+
+</html>

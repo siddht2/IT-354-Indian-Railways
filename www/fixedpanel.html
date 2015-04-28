@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQM Complex Demo</title>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=no; target-densityDpi=device-dpi"/>
+    
+    <link rel="stylesheet" href="css/style.mobile.css" />
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="js/jqm/jquery.mobile-1.4.5.css">
+<link rel="stylesheet" href="js/jqm/jquery.mobile.theme-1.4.5.min.css">
+<link rel="stylesheet" href="js/jqm/jquery.mobile.icons-1.4.5.min.css">
+
+
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    
+    <script>
+    $(document).on('pagebeforeshow', '[data-role="page"]', function(){                
+    $('<div>').attr({'id':'mypanel','data-role':'panel'}).appendTo($(this));
+    $('<a>').attr({'id':'test-btn','data-role':'button'}).html('Click me').appendTo('mypanel');
+    $.mobile.activePage.find('#mypanel').panel();
+    $(document).on('click', '#open-panel', function(){   
+         $.mobile.activePage.find('#mypanel').panel("open");       
+    });    
+});
+    </script> 
+    <style>
+    .ui-panel-animate {
+    transition: transform 1350ms ease 0s !important;
+}
+    </style>   
+</head>
+<body>
+    <div data-role="page" id="index">
+        
+    <!--<div data-role="panel" id="mypanel">
+
+    </div>-->
+        
+        <div data-theme="a" data-role="header">
+            <h3>
+                First Page
+            </h3>
+            <a href="#second" class="ui-btn-right">Next</a>
+        </div>
+
+        <div data-role="content">
+            <a data-role="button" id="open-panel">&#61641;</a>
+        </div>
+
+        <div data-theme="a" data-role="footer" data-position="fixed">
+
+        </div>
+    </div> 
+    <div data-role="page" id="second">
+        <div data-theme="a" data-role="header">
+            <h3>
+                Second Page
+            </h3>
+            <a href="#index" class="ui-btn-left">Back</a>
+            <a data-role="button" id="open-panel">&#61641;</a>
+        </div>
+
+        <div data-role="content">
+            <a data-role="button" id="open-panel">Open Pannel</a>
+        </div>
+
+        <div data-theme="a" data-role="footer" data-position="fixed">
+
+        </div>
+    </div>    
+</body>
+</html> 

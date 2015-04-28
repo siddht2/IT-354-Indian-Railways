@@ -15,222 +15,23 @@
     <!-- Google CDN for jQuery -->
 
     <script>
-        var stcode1 = "";
-        var stcode2 = "";
-        var trainNo = [];
-        var spstn1 = "";
-        var spstn2 = "";
-
-
-        function fetchSpecificStationList(selectedTrain) {
-            var sptrains;
-            var apilink = 'http://api.erail.in/route/?key=3d970b43-550b-4568-9227-492697f47093&trainno=';
-            apilink += selectedTrain;
-            var sp1 = document.getElementById('spStation1');
-            var sp2 = document.getElementById('spStation2');
-            sptrains = "<option value='1' disabled='disabled' selected='selected'>Select a Train...</option>";
-            console.log(apilink);
-            $.ajax({
-                type: 'GET',
-                url: apilink,
-                dataType: 'json',
-                success: function (data) {
-                    if (data.status == "OK") {
-
-                        for (var i = 0; i < data.result.route[0].stn.length; i++) {
-                            sptrains += "<option value='" + data.result.route[0].stn[i].code +"-"+data.result.route[0].stn[i].name+ "'>" + data.result.route[0].stn[i].name + "</option>";
-                        }
-                        document.getElementById('spStation1').innerHTML = sptrains;
-                        document.getElementById('spStation2').innerHTML = sptrains;
-                    } else {
-                        document.getElementById('errormessages').innerHTML = data.status;
-                    }
-
-                },
-                error: function (x, e) {
-                    alert('ERROR');
-                }
-            });
-        }
-
-        var selelctedValue = null;
-
-        function onSelectValueInDropdown() {
-            //Value selected from dropdown
-            selelctedValue = $('#select-train-dd :selected').val();
-            fetchSpecificStationList(selelctedValue);
-            return selelctedValue;
-        }
-
-        //Get current date-http://stackoverflow.com/questions/1531093/how-to-get-current-date-in-javascript
-
-        function getTodayDate() {
-            var today = new Date();
-            var dd = today.getDate();
-            var mm = today.getMonth() + 1; //January is 0!
-            var yyyy = today.getFullYear();
-
-            if (dd < 10) {
-                dd = '0' + dd
-            }
-
-            if (mm < 10) {
-                mm = '0' + mm
-            }
-
-            today = mm + '/' + dd + '/' + yyyy;
-            return today;
-        }
-
-        // main page function
-        function fetchSessionVariables() {
-
-            if (typeof (Storage) != "undefined") {
-                stcode1 = localStorage.getItem("st1");
-                stcode2 = localStorage.getItem("st2");
-                document.getElementById('station1').innerHTML = stcode1;
-                document.getElementById('station2').innerHTML = stcode2;
-            }
-            var apiLink = 'http://api.erail.in/trains/?key=3d970b43-550b-4568-9227-492697f47093&stnfrom=';
-            var linkModified = apiLink + stcode1 + "&stnto=" + stcode2;
-            var trainDropDown = "<option value='1' disabled='disabled' selected='selected'>Select a Train...</option>";
-            $.ajax({
-                type: 'GET',
-                url: linkModified,
-                dataType: 'json',
-                success: function (data) {
-
-                    for (var i = 0; i < data.result.length; i++) {
-
-                        trainNo[i] = data.result[i].trainno;
-
-                        //Code for Drop Down list
-                        trainDropDown += "<option value='" + data.result[i].trainno + "'>" + data.result[i].name + "-" + data.result[i].trainno + "</option>";
-                    }
-
-                    if (data.result.length < 1) {
-                        trainsListToDisplay = "No trains running on this route";
-                    }
-
-                    document.getElementById('select-train-dd').innerHTML = trainDropDown;
-
-                },
-                error: function (x, e) {
-                    alert('ERROR');
-                }
-            });
-
-        }
-
-        //Route function
-
-        function getStops() {
-
-            var trainno = onSelectValueInDropdown();
-
-            var apilink = 'http://api.erail.in/route/?key=3d970b43-550b-4568-9227-492697f47093&trainno=';
-            apilink += trainno;
-            var displayTable = "<table border='1'>"
-            displayTable += "<tr><th>Stop Name</th><th>Arrival Time</th><th>Departure Time</th></tr>";
-
-
-            $.ajax({
-                type: 'GET',
-                url: apilink,
-                dataType: 'json',
-                success: function (data) {
-
-                    document.getElementById('trainname').innerHTML = data.result.name;
-                    document.getElementById('trainno').innerHTML = data.result.trainno;
-
-                    for (var i = 0; i < data.result.route[0].stn.length; i++) {
-                        displayTable += "<tr>";
-                        displayTable += "<td>" + data.result.route[0].stn[i].name + "</td>";
-                        displayTable += "<td>" + data.result.route[0].stn[i].arr + "</td>";
-                        displayTable += "<td>" + data.result.route[0].stn[i].dep + "</td>";
-                        displayTable += "</tr>";
-                    }
-                    displayTable += "</table>";
-                    document.getElementById('displaystoplist').innerHTML = displayTable;
-                },
-                error: function (x, e) {
-                    alert('ERROR');
-                }
-            });
-        }
-
-        //LiveStatus function
-
-        function getLiveStatus() {
-
-            var trainno = onSelectValueInDropdown();
-
-            var apilink = 'http://api.erail.in/live/?key=3d970b43-550b-4568-9227-492697f47093&trainno=';
-            apilink += trainno;
-            apilink += "&stnfrom=" + stcode1;
-            apilink += "&date=" + getTodayDate();
-            console.log(apilink);
-            $.ajax({
-                type: 'GET',
-                url: apilink,
-                dataType: 'json',
-                success: function (data) {
-                    if (data.status == "OK") {
-                        alert(data.result.name + "-" + data.result.trainno);
-                        document.getElementById('trainnm').innerHTML = data.result.name;
-                        document.getElementById('trainid').innerHTML = data.result.trainno;
-                        document.getElementById('delayrun').innerHTML = data.result.delayrun;
-                        document.getElementById('statusat').innerHTML = data.result.statusat;
-                        document.getElementById('statusmsg').innerHTML = data.result.statusmsg;
-                        document.getElementById('platform').innerHTML = data.result.platform;
-                    } else {
-                        document.getElementById('status').innerHTML = data.status;
-                    }
-
-                },
-                error: function (x, e) {
-                    alert('ERROR');
-                }
-            });
-
-
-        }
-        //Map functions end
-
-        function goBack() {
-            window.location.replace('SelectStations.html');
-        }
-
-        function redirectToMap() {
-            window.location.replace("Map.html");
-        }
-
-        function seatAvailibility() {
-            localStorage.setItem("trainSelected", selelctedValue);
-            window.location.replace("SeatAvailibility.html");
-        }
-
-        function onStationSelect() {
-            localStorage.setItem("station1", $('#spStation1 :selected').val());
-            localStorage.setItem("station2", $('#spStation2 :selected').val());
-            localStorage.setItem("startStation", $('#spStation1 :selected').val());
-            localStorage.setItem("endStation", $('#spStation2 :selected').val());
-        }
+       
     </script>
-    
+
     <style>
         /* style settings for Google map */
-        #mapmarker,
-        #map-canvas {
-            width: 100%;
-            height: 100%;
-            padding: 0;
-        }
+	#mapmarker, #map-canvas
+	{ 
+		width: 100%; 
+		height: 100%; 
+		padding: 0; 
+	}
     </style>
 </head>
 
-<body onload="fetchSessionVariables();">
-    <div data-role="page" id="pageone">
+<body>
+
+    <div data-role="page" id="pagemenu">
         <h1>Home page</h1>
         <div data-role="header">
             <h1>Indian Railways</h1>
@@ -247,26 +48,19 @@
                     <select name="select-train-dd" id="select-train-dd" onchange="onSelectValueInDropdown();" data-mini="false">
                     </select>
                 </div>
-                <div id="specificStations">
-                    <select id="spStation1" onchange="onStationSelect();">
-                    </select>
-                    <select id="spStation2" onchange="onStationSelect();">
-
-                    </select>                    
-                </div>
-                <p id="errormessages"></p>
             </form>
             <a href="#route" onclick="getStops();">Route Info</a>
             <a href="#liveStatus" onclick="getLiveStatus();" class="ui-btn ui-corner-all">Live Status</a>
-            <a id="toMap" onclick="redirectToMap();" class="ui-btn ui-corner-all">Map</a>
-            <a id="seatAvailibility" onclick="seatAvailibility();" class="ui-btn ui-corner-all">Seat Availibility</a>
-            <a onClick='goBack();' alt='goback' class="ui-btn ui-corner-all">Go Back</a>
+            <a id="toMap" href="#mapmarker" onclick="mapFunctionStart();" class="ui-btn ui-corner-all">Map</a>
+            <a href='SelectStations.html' alt='goback' class="ui-btn ui-corner-all">Go Back</a>
         </div>
         <div data-role="footer" data-position="fixed">
             <h1>&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</h1>
         </div>
     </div>
+
     <!--Route page-->
+
     <div data-role="page" id="route">
         <div data-role="header">
             <h1>Route Info</h1>
@@ -306,15 +100,16 @@
         </div>
 
         <div data-role="main" class="ui-content" id="map-canvas">
-        </div>
-        <br/>
-        <div>
-            <label for="address"> Address:</label>
-            <input type="text" id="address" />
-            <button id="locate">Locate</button>
-        </div>
+           
+				<!--<div id='map-canvas'></div> -->
+		</div>	
+            <br/>
+            <div>
+                <label for="address"> Address:</label>
+                <input type="text" id="address" />
+                <button id="locate">Locate</button>
+            </div>
 
-    </div>
-</body>
-
+        </div>
+	</body>
 </html>
