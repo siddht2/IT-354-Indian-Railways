@@ -188,7 +188,7 @@ function getToday() {
 
     var d = new Date();
     var mon = month[d.getMonth()];
-    var date = d.getDate();
+    var date = d.getDate()+1;
     var yyyy = d.getFullYear();
 
     if (date < 10) {

@@ -27,17 +27,16 @@
     </head>
 
 <body onload="loadMap();">
-<div data-role="page" id="mapmarker">
+<div data-role="page" id="mapmarker" data-theme="b">
         <!-- header -->
-    <div data-role="header">
-    <a href="#mypanel" class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all"></a>
-
+    <div data-role="header"data-position="fixed">
+   
          <h1><span class="title">Map View</span></h1>
 	<a onClick="goBack();" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-arrow-l ui-corner-all">Back</a>
     </div>
-		
+		<div data-role="main" class="ui-content content">
         	<div id="map-canvas"></div>
-       
+       </div>
        
            <div data-role="footer" data-position="fixed" class="ui-footer">
             <h1><span class="footer">&copy;Kushal Tare, Sudhanshu Mehrotra, Harshit Gindra</span></h1>
