@@ -30,34 +30,61 @@
 
         $(document).one('pagebeforecreate', function () {
 
-            $.ajax({
-                type: 'GET',
-                url: 'http://api.erail.in/stations/?key=3d970b43-550b-4568-9227-492697f47093',
-                dataType: 'json',
-                success: function (data) {
-
-                    for (var i = 0; i < data.length; i++) {
-                        stationList[i] = data[i].name;
-                        stationCode[i] = data[i].code;
-                    }
-                },
-                error: function (x, e) {
-                    alert('ERROR');
+         
+            
+    var request = new XMLHttpRequest();
+    request.open("GET", "http://api.erail.in/stations/?key=3d970b43-550b-4568-9227-492697f47093", true);
+            
+    request.onreadystatechange = function() {//Call a function when the state changes.
+        if (request.readyState == 4) {
+            if (request.status == 200 || request.status == 0) {
+                var tweets = JSON.parse(request.responseText);
+                alert(tweets.status);
+                
                 }
-            });
-        });
-
-        $(function () {
-            $("#tags1").autocomplete({
-                source: stationList
-            });
-        });
-
-        $(function () {
-            $("#tags2").autocomplete({
-                source: stationList
-            });
-        });
+              
+               
+            }
+        }
+   
+    console.log("asking for tweets");
+    request.send();
+}
+        );
+            
+            
+            
+            
+            
+            
+//            $.ajax({
+//                type: 'GET',
+//                url: 'http://api.erail.in/stations/?key=3d970b43-550b-4568-9227-492697f47093',
+//                dataType: 'json',
+//                success: function (data) {
+//
+//                    for (var i = 0; i < data.length; i++) {
+//                        stationList[i] = data[i].name;
+//                        stationCode[i] = data[i].code;
+//                    }
+//                },
+//                error: function (x, e) {
+//                    alert('ERROR');
+//                }
+//            });
+//        });
+//
+//        $(function () {
+//            $("#tags1").autocomplete({
+//                source: stationList
+//            });
+//        });
+//
+//        $(function () {
+//            $("#tags2").autocomplete({
+//                source: stationList
+//            });
+//        });
 
         function storeSessionVariables() {
 
