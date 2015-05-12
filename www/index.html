@@ -27,30 +27,29 @@
         var stationList = [];
         var stationCode = [];
 
-      var xmlhttp = new XMLHttpRequest();
-		var url = "http://api.erail.in/stations/?key=3d970b43-550b-4568-9227-492697f47093";
+        var xmlhttp = new XMLHttpRequest();
+        var url = "http://api.erail.in/stations/?key=3d970b43-550b-4568-9227-492697f47093";
 
-			xmlhttp.onreadystatechange = function() {
-			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-        var myArr = JSON.parse(xmlhttp.responseText);
-					myFunction(myArr);
-				}
-			}
-		xmlhttp.open("GET", url, true);
-		xmlhttp.send();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var myArr = JSON.parse(xmlhttp.responseText);
+                myFunction(myArr);
+            }            
+        }
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
 
-	function myFunction(data) {
-    for (var i = 0; i < data.length; i++) {
-                        stationList[i] = data[i].name;
-                        stationCode[i] = data[i].code;
-                    }
-					alert("Complete");
-}
-		
-		
-		
-		
-           
+        function myFunction(data) {
+            for (var i = 0; i < data.length; i++) {
+                stationList[i] = data[i].name;
+                stationCode[i] = data[i].code;
+            }           
+        }
+
+
+
+
+
 
         $(function () {
             $("#tags1").autocomplete({
@@ -68,31 +67,20 @@
 
             var startStationName = document.getElementById('tags1').value;
             var endStationName = document.getElementById('tags2').value;
-            if (startStationName == "")  {
+            if (startStationName == "") {
                 alert("Please Select starting station");
-            } 
-            else if(endStationName == ""){
+            } else if (endStationName == "") {
                 alert("Please Select destination");
-            }
-            
-            
-            
-            else {
+            } else {
 
                 if (typeof (Storage) != "undefined") {
                     //fetching respective station code
                     var stCode1 = stationCode[stationList.indexOf(document.getElementById('tags1').value)];
                     var stCode2 = stationCode[stationList.indexOf(document.getElementById('tags2').value)];
 
-
-                    // Store variable in local storage (Acts as session). Feature of HTML 5
-                    //   localStorage.setItem("st1", stCode1);
                     sessionStorage.setItem('st1', stCode1);
-                    //    localStorage.setItem("st2", stCode2);
                     sessionStorage.setItem('st2', stCode2);
-                    //   localStorage.setItem("stName1", startStationName);
                     sessionStorage.setItem('stName1', startStationName);
-                    //   localStorage.setItem("stName2", endStationName);
                     sessionStorage.setItem('stName2', endStationName);
                     window.location.replace("HomePage.html");
                 }
@@ -141,7 +129,6 @@
     <div data-role="page" id="pageone" data-theme="b">
         <div data-role="header">
             <span><h1>Indian Railways</h1></span>
-           
         </div>
         <div data-role="header" data-iconpos="bottom">
             <span><h3>Train Information from Indian Railways API</h3></span>
@@ -152,7 +139,6 @@
                     From:
                     <input required id="tags1" placeholder="From city (ex.-Delhi)"> To:
                     <input required id="tags2" placeholder="To city (ex. Mumbai)">
-
                 </div>
                 <a class="ui-btn ui-corner-all" onclick="storeSessionVariables();">Get Results</a>
             </form>

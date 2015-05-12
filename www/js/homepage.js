@@ -7,14 +7,7 @@ $(document).one('pagebeforecreate', function () {
 });
 
 //-------------------------------------------------Spinner Method-----------------------------------------
-/*$(document).ajaxStart(function () {
-    ("#wait").css("display", "block");
 
-});
-$(document).ajaxComplete(function () {
-    $("#wait").css("display", "none");
-	
-});*/
 $(document).on('ajaxStart', function () {
     setTimeout(function () {
         $.mobile.loading('show');
@@ -39,6 +32,7 @@ var spstn1 = "";
 var spstn2 = "";
 var runningdays = "";
 var coachClass = "";
+
 //Select train start//	
 $(document).ready(function () {
 
@@ -55,32 +49,36 @@ $(document).ready(function () {
             document.getElementById("to").innerHTML = stend;
         }
     }
-    var apiLink = 'http://api.erail.in/trains/?key=3d970b43-550b-4568-9227-492697f47093&stnfrom=';
-    var linkModified = apiLink + stcode1 + "&stnto=" + stcode2;
-    var trainDropDown = "<option value='1' disabled='disabled' selected='selected'>Select a Train...</option>";
-    $.ajax({
-        type: 'GET',
-        url: linkModified,
-        dataType: 'json',
-        success: function (data) {
+    
+    var xmlhttp = new XMLHttpRequest();
+        var url = "http://api.erail.in/trains/?key=3d970b43-550b-4568-9227-492697f47093&stnfrom=";
+    var linkModified = url + stcode1 + "&stnto=" + stcode2;
+var trainDropDown = "<option value='1' disabled='disabled' selected='selected'>Select a Train...</option>";
+    
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var myArr = JSON.parse(xmlhttp.responseText);
+                myFunction(myArr);
+            }            
+        }
+        xmlhttp.open("GET", linkModified, true);
+        xmlhttp.send();
 
+        function myFunction(data) {
             for (var i = 0; i < data.result.length; i++) {
-
+               
                 trainNo[i] = data.result[i].trainno;
                 rundays[i] = data.result[i].rundays;
                 classes[i] = data.result[i].cls;
                 //Code for Drop Down list
                 trainDropDown += "<option value='" + data.result[i].trainno + "'>" + data.result[i].name + "-" + data.result[i].trainno + "</option>";
-            }
+            } 
             if (data.result.length < 1) {
                 trainsListToDisplay = "No trains running on this route";
             }
             document.getElementById('select-train-dd').innerHTML = trainDropDown;
-        },
-        error: function (x, e) {
-            alert('ERROR');
         }
-    });
+    
 });
 //Select train ended
 
